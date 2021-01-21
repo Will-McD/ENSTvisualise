@@ -10,7 +10,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                text.size = 1,
                                scale = T,
                                dt = 0.05,
-                               f = c(6.29e8, 1.17e8),
+                               f = c(1.17e8, 6.29e8),
                                png.size = NULL,
                                show.R200 = F,
                                specify.frame = NULL,

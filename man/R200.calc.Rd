@@ -4,7 +4,7 @@
 \alias{R200.calc}
 \title{Calculates The Virial Radius}
 \usage{
-R200.calc(species = halo$particles$species, mass.frac = c(6.29e+08, 1.17e+08))
+R200.calc(species = halo$particles$species, mass.frac = c(1.17e+08, 6.29e+08))
 }
 \arguments{
 \item{species}{A list containing that each particle in the halo's species (a numeric value)
@@ -13,7 +13,9 @@ Naturally set to read from a global list called halo.}
 
 \item{mass.frac}{A vector containing the mass fraction of the individual species of
 particle within the halo in simulation units (solar_mass / h).
-Naturally set to the mass fraction from SURFS L210N1024NR.}
+Naturally set to the mass fraction from SURFS L210N1024NR.
+
+(baryons, dark matter)}
 }
 \description{
 Calculates the viral radius (R200) of a halo

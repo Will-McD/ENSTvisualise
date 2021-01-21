@@ -4,7 +4,7 @@
 \alias{generate.particle.id.table.4}
 \title{Make Table of Particle IDs, Location and Velocities}
 \usage{
-generate.particle.id.table.4(x, v, species = 2)
+generate.particle.id.table.4(x, v, species = 1)
 }
 \arguments{
 \item{Halo}{A hdf5 file that has been revrived using SURFsuite already read into
@@ -23,7 +23,7 @@ function will assume that the snapshot is at z=0}
 
 \item{Species}{An intiger value of either 1 or 2.
 
-1 = baryonic particles
+1 = baryonic particles (gas)
 
 2 = dark matter particles}
 }

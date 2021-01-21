@@ -20,7 +20,7 @@ modified.surfsmovie.enst(
   rotation = 1,
   scale = T,
   dt = 0.05,
-  f = c(6.29e+08, 1.17e+08),
+  f = c(1.17e+08, 6.29e+08),
   png.size = c(300, 300),
   specify.frame = NULL,
   col = NULL,
@@ -96,11 +96,6 @@ The colour palette that will be used to plot the enstrophy.}
 
 !!! A WORK IN PROGESS !!!
 This parameter is not 100\% finished and not working in at a suitable level yet!}
-
-\item{select.species}{An optional value to identify if a species within the halo should be isolated for the movie.
-If NULL then all species will be included,
-otherwise a numerical value to represent which species to be isolated is used.
-i.e) If the movie is to be of only gas particles from a hydrodynamic simulation then a value of 1 is used}
 }
 \description{
 This is a modified version of the surfsmovie function available in the Simstar package.

@@ -21,7 +21,7 @@ modified.surfsmovie(
   text.size = 1,
   scale = T,
   dt = 0.05,
-  f = c(6.29e+08, 1.17e+08),
+  f = c(1.17e+08, 6.29e+08),
   png.size = NULL,
   show.R200 = F,
   specify.frame = NULL,

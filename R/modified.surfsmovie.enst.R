@@ -9,7 +9,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
                                     rotation = 1,
                                     scale = T,
                                     dt = 0.05,
-                                    f = c(6.29e8, 1.17e8),
+                                    f = c(1.17e8, 6.29e8),
                                     png.size = c(300,300),
                                     specify.frame = NULL,
                                     col = NULL,
@@ -31,12 +31,6 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #'
   #'@param halo
   #'A list containing the halo information from a given hdf5 file from surfsuite
-  #'
-  #'@param select.species
-  #'An optional value to identify if a species within the halo should be isolated for the movie.
-  #'If NULL then all species will be included,
-  #'otherwise a numerical value to represent which species to be isolated is used.
-  #'i.e) If the movie is to be of only gas particles from a hydrodynamic simulation then a value of 1 is used
   #'
   #'@param radius
   #'An optional value of the radius given in the simulation units of movie to be
@@ -240,7 +234,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     v = hold[[2]]
 
     np = track$halo$n_particles
-    ID.table <<- generate.particle.id.table.4(x,v, species=2)
+    ID.table <<- generate.particle.id.table.4(x,v, species=1)
 
     #divide populations for images and  set up data structures for calculating enstrophy
     Population <<- generate.empty.data()

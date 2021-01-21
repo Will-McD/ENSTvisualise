@@ -1,5 +1,5 @@
 
-generate.particle.id.table.4 = function(x, v, species=2){
+generate.particle.id.table.4 = function(x, v, species=1){
 
   #' Make Table of Particle IDs, Location and Velocities
   #'
@@ -32,7 +32,7 @@ generate.particle.id.table.4 = function(x, v, species=2){
   #'@param Species
   #'An intiger value of either 1 or 2.
   #'
-  #'    1 = baryonic particles
+  #'    1 = baryonic particles (gas)
   #'
   #'    2 = dark matter particles
   #'
@@ -42,7 +42,7 @@ generate.particle.id.table.4 = function(x, v, species=2){
   # identify which frame or snapshot to use
 
   #center the halo based on mass and velocity
-  p.mass = c(6.29e8, 1.17e8) # mass of particles in simulation, (DM, Baryon) [Solar Mass / h]
+  p.mass = c(1.17e8, 6.29e8) # mass of particles in simulation, (DM, Baryon) [Solar Mass / h]
   #p.mass = (f/sum(f)) # mass fraction of particles in the simulation
   m = p.mass[halo$particle$species]
   cm = c(sum(x[,1]*m),sum(x[,2]*m),sum(x[,3]*m))/sum(m)

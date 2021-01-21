@@ -1,5 +1,5 @@
 
-R200.calc = function(species = halo$particles$species, mass.frac = c(6.29e8, 1.17e8)){
+R200.calc = function(species = halo$particles$species, mass.frac = c(1.17e8, 6.29e8)){
 
   #'
   #'Calculates The Virial Radius
@@ -17,6 +17,8 @@ R200.calc = function(species = halo$particles$species, mass.frac = c(6.29e8, 1.1
   #' A vector containing the mass fraction of the individual species of
   #' particle within the halo in simulation units (solar_mass / h).
   #'Naturally set to the mass fraction from SURFS L210N1024NR.
+  #'
+  #'(baryons, dark matter)
   #'
   #'@export
   #'
