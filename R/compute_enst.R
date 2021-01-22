@@ -107,7 +107,7 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   )
 
   # Compute stable enst for center of cross
-  enst = 0.5 * vectornorm(c(curl.x[1], curl.y[1], curl.z[1]))^2
+  enst = 0.5 * cooltools::vectornorm(c(curl.x[1], curl.y[1], curl.z[1]))^2
 
   if(noise){error = 0.5*sd(cooltools::vectornorm(expand.grid(curl.x[-1], curl.y[-1], curl.z[-1])))^2}else{error=NA}
 
