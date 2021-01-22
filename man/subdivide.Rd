@@ -10,7 +10,8 @@ subdivide(
   id = seq_along(ID.table$RX),
   ntot = 0,
   noise = T,
-  flag = F
+  flag = F,
+  Grid.L = Global.L
 )
 }
 \arguments{
@@ -31,13 +32,15 @@ Set to False to reduce computational time when generating movies.}
 \item{flag}{A boolean value determining if the flagged cells should be tracked, if True
 then a data.table is maintained showing all cells that where subdivided.
 Naturally set to False as it slows down computational time.}
+
+\item{Grid.L}{A value to define the length of one side of the total grid used.}
 }
 \description{
 From the input particles ID's place the particles into a 3 x 3 x 3 grid with
-a side length of Global.L/(3^n) around the center given.
+a side length of Grid.L/(3^n) around the center given.
 With the given grid then calculate the curl around the defined center.
 
 This processes is continued recursively on a progressively more
 refined (smaller) grid with the center moving across the box containing all
-particles within in the halo (the center moves as a fraction of Global.L)
+particles within in the halo (the center moves as a fraction of Grid.L)
 }

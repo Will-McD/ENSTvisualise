@@ -1,5 +1,5 @@
 
-modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
+modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
                                     mp4file, fps = 60,
                                     Global.nmax = 7,
                                     calc.noise = F,
@@ -38,9 +38,10 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #'@param halo
   #'A list containing the halo information from a given hdf5 file from surfsuite
   #'
-  #'@param radius
-  #'An optional value of the radius given in the simulation units of movie to be
-  #'shown, if NULL then 1.5 times the virial radius will be used.
+  #'@param mesh.width
+  #'A value of the width of the adaptive mesh used to calculate
+  #'enstrophy.Naturally set to the Global.L value.
+  #'
   #'
   #'@param aspect
   #'An optional value for the aspect ratio of the .mp4 file produced, naturally aspect ratio is 1 (a square).
@@ -232,7 +233,9 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     # progress update
     cat(sprintf('Making frame: %d/%d\n',frame,length(t.plot)))
 
-    Global.L <<- 3 * R200.calc() / sf[frame]
+    Grid.L = mesh.width / sf[frame]
+
+    cat(sprintf("%f", Grid.L))
 
     #print(c(Global.L, sf[frame]))
 
@@ -253,7 +256,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     Population[[1]] = length(ID.table$RX)
 
     #calculate enstrophy
-    ntot = subdivide(noise=calc.noise)
+    ntot = subdivide(noise=calc.noise, Grid.L = Grid.L)
 
 
     # remove all NA values saved if they exist.
@@ -349,3 +352,5 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
 
 
 }
+
+

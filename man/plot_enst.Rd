@@ -5,7 +5,7 @@
 \title{Plot the enstrophy from the refined grid algorithm}
 \usage{
 plot_enst(
-  max.layer = 5,
+  max.layer,
   smoothing = 1/3,
   gamma = 0.01,
   scale = NULL,

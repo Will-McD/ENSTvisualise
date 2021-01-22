@@ -1,5 +1,5 @@
 
-subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, noise=T, flag=F){
+subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, noise=T, flag=F, Grid.L = Global.L){
 
   #'Recursively Subdivide particles into a 3 x 3 x 3 grid and calculate the enstrophy.
   #'
@@ -8,12 +8,12 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   #'
   #'@description
   #'From the input particles ID's place the particles into a 3 x 3 x 3 grid with
-  #'a side length of Global.L/(3^n) around the center given.
+  #'a side length of Grid.L/(3^n) around the center given.
   #'With the given grid then calculate the curl around the defined center.
   #'
   #'This processes is continued recursively on a progressively more
   #'refined (smaller) grid with the center moving across the box containing all
-  #' particles within in the halo (the center moves as a fraction of Global.L)
+  #' particles within in the halo (the center moves as a fraction of Grid.L)
   #'
   #'@param n
   #'The layer of grid refinement and corresponds to the index in the Storage list
@@ -39,10 +39,14 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   #'  then a data.table is maintained showing all cells that where subdivided.
   #'Naturally set to False as it slows down computational time.
   #'
+  #'@param Grid.L
+  #' A value to define the length of one side of the total grid used.
+  #'
+  #'
   #'@export
   #'
 
-  ds = Global.L/3^n #cell box side length
+  ds = Grid.L/3^n #cell box side length
 
   # sort each particle from the IDs given into a cell box within the 3x3x3 grid based on the particles x, y and z coordinates
   #stored in data.table for convienence, data.table is very easy to manipulate
@@ -74,10 +78,10 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   if(all(box.n[c(5,11,13,14,15,17,23)] >= 1)){ # is the cross configuration populated
 
     hold = compute_enst(box.x/box.n, box.y/box.n ,box.z/box.n, ds, noise=noise) # compute the enstrophy of the grid using the mean velocities of the cell boxes.
-    s.ds = Global.L/3^(n-1)
-    s.i = ceiling((center[1]+Global.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
-    s.j = ceiling((center[2]+Global.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
-    s.k = ceiling((center[3]+Global.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
+    s.ds = Grid.L/3^(n-1)
+    s.i = ceiling((center[1]+Grid.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
+    s.j = ceiling((center[2]+Grid.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
+    s.k = ceiling((center[3]+Grid.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
     if(n==1){
       Storage[[1]] <<- hold$enst
 
@@ -105,7 +109,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
 
         # move center of grid, subdivide one layer further
         # recursivly call the subdivide function.
-        ntot = subdivide(n=n+1, center=center+c(i-2,j-2,k-2)*ds, id=c(index2.0[, id, by=vel.index][which(vel.index==l)]$id), ntot, noise)
+        ntot = subdivide(n=n+1, center=center+c(i-2,j-2,k-2)*ds, id=c(index2.0[, id, by=vel.index][which(vel.index==l)]$id), ntot, noise, Grid.L = Grid.L)
 
       }
     }

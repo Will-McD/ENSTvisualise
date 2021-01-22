@@ -6,7 +6,7 @@
 \usage{
 modified.surfsmovie.enst(
   halo,
-  radius = NULL,
+  mesh.width = GLobal.L,
   aspect = 1,
   mp4file,
   fps = 60,
@@ -31,8 +31,8 @@ modified.surfsmovie.enst(
 \arguments{
 \item{halo}{A list containing the halo information from a given hdf5 file from surfsuite}
 
-\item{radius}{An optional value of the radius given in the simulation units of movie to be
-shown, if NULL then 1.5 times the virial radius will be used.}
+\item{mesh.width}{A value of the width of the adaptive mesh used to calculate
+enstrophy.Naturally set to the Global.L value.}
 
 \item{aspect}{An optional value for the aspect ratio of the .mp4 file produced, naturally aspect ratio is 1 (a square).}
 

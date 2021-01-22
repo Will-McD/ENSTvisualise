@@ -1,5 +1,5 @@
 
-plot_enst = function(max.layer=5,smoothing=1/3,gamma=0.01, scale=NULL, final=F, col.palette = NULL, bg.col='black') {
+plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, col.palette = NULL, bg.col='black') {
 
   #'
   #' Plot the enstrophy from the refined grid algorithm
@@ -84,7 +84,7 @@ plot_enst = function(max.layer=5,smoothing=1/3,gamma=0.01, scale=NULL, final=F, 
   if(is.null(scale)){s = 1}else{s=scale}
 
   #nplot(xlim=c(-dim(array2d)[1] * s, dim(array2d)[1] * s), ylim=c(-dim(array2d)[1] * s,dim(array2d)[1] * s),cex=0.25, pty='s') # empty plot as template for the raster image
-  nplot(xlim=c(-dim(array2d)[1] / s, dim(array2d)[1] / s), ylim=c(-dim(array2d)[1] / s,dim(array2d)[1] / s),cex=0.25, pty='s') # empty plot as template for the raster image
+  cooltools::nplot(xlim=c(-dim(array2d)[1] / s, dim(array2d)[1] / s), ylim=c(-dim(array2d)[1] / s,dim(array2d)[1] / s),cex=0.25, pty='s') # empty plot as template for the raster image
 
   img = apply(img,c(1,2),sum) # collapse the array of image matrices as required.
   if(final){img = img/10}
