@@ -19,6 +19,7 @@ Imports:
     rgl,
     rhdf5,
     magicaxis,
+    cooltools,
     devtools,
     roxygen2,
     docstring,
