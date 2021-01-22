@@ -20,6 +20,6 @@ time_step_calc = function(movie.length, fps, max.lbt = 12.72){
   #'@export
 
   time.step = max.lbt / (movie.length * fps)
-  cat(sprintf('required look time-step: %f  Gyrs', time.step))
+  cat(sprintf(' %f  Gyrs', time.step))
 
 }
