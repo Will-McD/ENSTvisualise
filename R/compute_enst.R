@@ -3,6 +3,10 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   #'
   #'Compute the Norm of the Curl from the given mesh
   #'
+  #' @importFrom cooltools vectornorm
+  #'
+  #'
+  #'
   #'@description Calculates the normal curl from the given grid about the center of the grid,
   #'the curl is calculated through numerical approximations of partial derivatives
   #'across the grid cells.
@@ -105,7 +109,7 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   # Compute stable enst for center of cross
   enst = 0.5 * vectornorm(c(curl.x[1], curl.y[1], curl.z[1]))^2
 
-  if(noise){error = 0.5*sd(vectornorm(expand.grid(curl.x[-1], curl.y[-1], curl.z[-1])))^2}else{error=NA}
+  if(noise){error = 0.5*sd(cooltools::vectornorm(expand.grid(curl.x[-1], curl.y[-1], curl.z[-1])))^2}else{error=NA}
 
   # Normalise enst
   if(!is.null(normalise)){
