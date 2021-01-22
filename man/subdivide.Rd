@@ -29,7 +29,7 @@ It is naturally set to True.
 Set to False to reduce computational time when generating movies.}
 
 \item{flag}{A boolean value determining if the flagged cells should be tracked, if True
-then a list is maintained showing all cells that where subdivided.
+then a data.table is maintained showing all cells that where subdivided.
 Naturally set to False as it slows down computational time.}
 }
 \description{

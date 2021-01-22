@@ -2,7 +2,7 @@
 % Please edit documentation in R/modified.surfsmovie.enst.R
 \name{modified.surfsmovie.enst}
 \alias{modified.surfsmovie.enst}
-\title{generates a movie from a given halo hdf5 file from surfsuite.}
+\title{Generates a movie from a given halo hdf5 file from surfsuite.}
 \usage{
 modified.surfsmovie.enst(
   halo,
@@ -82,7 +82,7 @@ the look-back time advances per frame. Naturally set to 0.02Gyrs}
 
 \item{f}{A vector containing the mass fraction of particles within
 the simulation in simulation units (solar_Mass / h). Naturally set to the
-mass fraction in the SURFS simulation L210N1024NR (6.29e8, 1.17e8), {DM, Bar}}
+mass fraction in the SURFS simulation L210N1024NR (1.17e8, 6.29e8), {Baryon, Dark Matter}}
 
 \item{png.size}{An optional value that determines the size of the png files produced and
 therefore the size of the mp4 files resolution.}

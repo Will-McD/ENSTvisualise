@@ -17,18 +17,17 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
                                     ...) {
 
 
-  #'
+  #' Generates a movie from a given halo hdf5 file from surfsuite.
   #'
   #' @import data.table
   #' @import pracma
   #' @import simstar
-  #' @importFrom  grDevices png
+  #' @importFrom grDevices png
   #' @importFrom ggplot2 qplot
   #' @importFrom magick image_write
   #' @importFrom cooltools cosmofct rotation3 quadrupole
-  #' @importFrom  celestial cosdistTravelTime
+  #' @importFrom celestial cosdistTravelTime
   #'
-  #'generates a movie from a given halo hdf5 file from surfsuite.
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.

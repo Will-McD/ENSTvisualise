@@ -13,8 +13,8 @@ expand(x, n = 3)
 which the side lengths of the matrix will be increased by a factor of.}
 }
 \description{
-Scale up 'expand' a matrix "x" by a scale factor of "n"
-, return the expanded matrix
+Scale up 'expand' a matrix "x" by a scale factor of "n".
+Then return the expanded matrix.
 i.e.) if x is a 3x3 matrix and n = 3 return a 9x9 matrix where each entry
-in x is now equivalent to 4 values within the new 9x9 matrix.
+in x is now equivalent to 9 values within the new 9x9 matrix.
 }

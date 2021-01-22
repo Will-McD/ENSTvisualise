@@ -25,7 +25,10 @@ function will assume that the snapshot is at z=0}
 
 1 = baryonic particles (gas)
 
-2 = dark matter particles}
+2 = dark matter particles
+
+Naturally set to 1. This is used to calculate the enstrophy,
+which is dependant on gas particles, therefore species 1.}
 }
 \description{
 Returns a data.table of each of the particles of the selected

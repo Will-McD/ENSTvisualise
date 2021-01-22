@@ -13,9 +13,8 @@ Naturally set to read from a global list called halo.}
 
 \item{mass.frac}{A vector containing the mass fraction of the individual species of
 particle within the halo in simulation units (solar_mass / h).
-Naturally set to the mass fraction from SURFS L210N1024NR.
-
-(baryons, dark matter)}
+Naturally set to the mass fraction from SURFS L210N1024NR.\preformatted{         (Baryons, Dark Matter)
+}}
 }
 \description{
 Calculates the viral radius (R200) of a halo

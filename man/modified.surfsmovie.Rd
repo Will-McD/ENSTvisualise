@@ -2,7 +2,7 @@
 % Please edit documentation in R/modified.surfsmovie.R
 \name{modified.surfsmovie}
 \alias{modified.surfsmovie}
-\title{generates a movie from a given halo hdf5 file from surfsuite.}
+\title{Generates a movie from a given halo hdf5 file from surfsuite.}
 \usage{
 modified.surfsmovie(
   halo,
@@ -32,9 +32,11 @@ modified.surfsmovie(
 \item{halo}{A list containing the halo information from a given hdf5 file from surfsuite}
 
 \item{select.species}{An optional value to identify if a species within the halo should be isolated for the movie.
-If NULL then all species will be included,
-otherwise a numerical value to represent which species to be isolated is used.
-i.e) If the movie is to be of only gas particles from a hydrodynamic simulation then a value of 1 is used}
+If NULL then all species will be included, otherwise a numerical value to represent which
+species to be isolated is used.
+
+1 = Baryon
+2 = Dark Matter}
 
 \item{radius}{An optional value of the radius given in the simulation units of movie to be
 shown, if NULL then 1.5 times the virial radius will be used.}

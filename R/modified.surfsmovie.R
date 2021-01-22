@@ -16,13 +16,14 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                ...) {
 
   #'
+  #' Generates a movie from a given halo hdf5 file from surfsuite.
+  #'
   #' @importFrom celestial cosdistTravelTime
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
   #' @import simstar
   #'
   #'
-  #'generates a movie from a given halo hdf5 file from surfsuite.
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.

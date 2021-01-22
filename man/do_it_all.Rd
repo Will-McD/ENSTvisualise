@@ -57,7 +57,7 @@ Enstrophy is a proxy value for the halos turbulence (numerical approximation
 of solenoidal turbulence).
 
 The video on the left is the halo showing Dark Matter
-(Red) and Baryons (Blue).
+(Blue) and Baryons (Red).
 The video on the right is the enstrophy
 }
 \examples{
