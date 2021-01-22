@@ -27,7 +27,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #' @importFrom magick image_write
   #' @importFrom cooltools cosmofct rotation3 quadrupole
   #' @importFrom celestial cosdistTravelTime
-  #'
+  #' @importFrom grDevices dev
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
