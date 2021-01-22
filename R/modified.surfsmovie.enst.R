@@ -19,20 +19,18 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
 
   #' Generates a movie from a given halo hdf5 file from surfsuite.
   #'
-  #' @import data.table
-  #' @import pracma
-  #' @import simstar
-  #' @importFrom grDevices png
-  #' @importFrom ggplot2 qplot
-  #' @importFrom magick image_write
-  #' @importFrom cooltools cosmofct rotation3 quadrupole
   #' @importFrom celestial cosdistTravelTime
+  #' @importFrom png writePNG
+  #' @importFrom magick image_read image_annotate
+  #' @importFrom simstar sphview
   #' @importFrom grDevices dev
+  #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
+  #' @importFrom grDevices pdf dev.off col2rgb
+  #' @importFrom graphics axis lines par rasterImage rect text
+  #' @importFrom ggplot qplot
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
-  #'
-  #'
   #'
   #'creates an .mp4 file from the provided halo list given showing the evolution
   #'of particles identified to be in the halo at z=0
@@ -165,7 +163,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     frame = track$particles[[snstr(snapshots$index[j])]]
     for(i in 1:3){
       if((max(frame[[i]]) - min(frame[[i]])) > 105){
-        #print(round(s/131*100, 3))
+        
         half.range = rep(105, length(frame[[i]]))
         frame[[i]] = mod(frame[[i]] + half.range, 210)
 
