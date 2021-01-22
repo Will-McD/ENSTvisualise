@@ -23,11 +23,11 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
   #' @importFrom simstar sphview
-  #' @importFrom grDevices dev
+  #' @importFrom grDevices dev.off dev.list
   #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
   #' @importFrom grDevices pdf dev.off col2rgb
   #' @importFrom graphics axis lines par rasterImage rect text
-  #' @importFrom ggplot qplot
+  #' @importFrom ggplot2 qplot
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
@@ -163,7 +163,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     frame = track$particles[[snstr(snapshots$index[j])]]
     for(i in 1:3){
       if((max(frame[[i]]) - min(frame[[i]])) > 105){
-        
+
         half.range = rep(105, length(frame[[i]]))
         frame[[i]] = mod(frame[[i]] + half.range, 210)
 
@@ -280,7 +280,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     plot_enst(max.layer=7,smoothing=1/3,gamma=0.01, scale = sf[frame], final=f.255,  col.palette = col) # create raster image of the layered enstrophy
 
 
-    dev.off() # Close the pdf file
+    grDevices::dev.off() # Close the pdf file
 
     if(show.R200){
 
@@ -297,7 +297,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
       system(call)
 
       ggplot2::qplot(mpg, wt, data = mtcars, colour = cyl)
-      dev.off()
+      grDevices::dev.off()
 
       # Combine
       out = image_composite(fig, rgb2, offset = "+70+30")
@@ -313,7 +313,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
 
       magick::image_write(img, path = place.png)
 
-      dev.off()
+      grDevices::dev.off()
 
       clear.dev.list()
 

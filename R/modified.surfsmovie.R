@@ -26,7 +26,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
   #' @importFrom grDevices pdf dev.off col2rgb
   #' @importFrom graphics axis lines par rasterImage rect text
-  #' @importFrom ggplot qplot
+  #' @importFrom ggplot2 qplot
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
@@ -271,7 +271,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
 
     # save frame
     fn = sprintf('%sframe_%0.6d.png',dir,frame)
-    writePNG(rasterflip(rgb),fn)
+    png::writePNG(cooltools::rasterflip(rgb),fn)
 
 
     if(show.R200){
