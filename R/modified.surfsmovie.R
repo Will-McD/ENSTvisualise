@@ -21,9 +21,12 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #' @importFrom celestial cosdistTravelTime
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
-  #' @import simstar
+  #' @importFrom simstar sphview
   #' @importFrom grDevices dev
-  #'
+  #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
+  #' @importFrom grDevices pdf dev.off col2rgb
+  #' @importFrom graphics axis lines par rasterImage rect text
+  #' @importFrom ggplot qplot
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
@@ -208,7 +211,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
 
   t.plot = rev(seq(min(snapshots$t),max(snapshots$t),dt))
   #print(t.plot)
-  cosmo = cosmofct(0, 10, H0 = 70, OmegaM = 0.3, OmegaL = 0.7)
+  cosmo = cooltools::cosmofct(0, 10, H0 = 70, OmegaM = 0.3, OmegaL = 0.7)
   sf = 1 / ( cosmo$t2z(t.plot) + 1 )
   #print(sf)
 
