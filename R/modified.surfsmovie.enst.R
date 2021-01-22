@@ -235,8 +235,6 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
 
     Grid.L = mesh.width / sf[frame]
 
-    cat(sprintf("%f", Grid.L))
-
     #print(c(Global.L, sf[frame]))
 
     str = snstr(snapshots$index[frame])

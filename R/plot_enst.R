@@ -75,7 +75,6 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
     img[,,i-1] = lim(gblur(array2d,min(smoothing*3^(max.layer-i)),max.smooth),min=0,max=1e99)
   }
 
-  print(dim(array2d))
 
   if(is.null(col.palette)){col = cubehelix(1e3)}else{col = col.palette} # define the colour palette to use
 
@@ -83,8 +82,7 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
 
   if(is.null(scale)){s = 1}else{s=scale}
 
-  #nplot(xlim=c(-dim(array2d)[1] * s, dim(array2d)[1] * s), ylim=c(-dim(array2d)[1] * s,dim(array2d)[1] * s),cex=0.25, pty='s') # empty plot as template for the raster image
-  cooltools::nplot(xlim=c(-dim(array2d)[1] / s, dim(array2d)[1] / s), ylim=c(-dim(array2d)[1] / s,dim(array2d)[1] / s),cex=0.25, pty='s') # empty plot as template for the raster image
+  cooltools::nplot(xlim=c(-dim(array2d)[1] * s, dim(array2d)[1] * s), ylim=c(-dim(array2d)[1] * s,dim(array2d)[1] * s),cex=0.25, pty='s') # empty plot as template for the raster image
 
   img = apply(img,c(1,2),sum) # collapse the array of image matrices as required.
   if(final){img = img/10}
