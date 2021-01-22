@@ -23,9 +23,8 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
   #' @importFrom simstar sphview
-  #' @importFrom grDevices dev.off dev.list
   #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
-  #' @importFrom grDevices pdf dev.off col2rgb
+  #' @importFrom grDevices pdf dev.off col2rgb dev.list
   #' @importFrom graphics axis lines par rasterImage rect text
   #' @importFrom ggplot2 qplot
   #'
