@@ -3,9 +3,9 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                mp4file, fps = 60,
                                H0 = 70, OmegaM = 0.3, OmegaL = 0.7,
                                velocity.conversion = 0.00102269032*(H0/100), # [-] (velocity unit)/(length unit/Gyr) at z=0
-                               keep.frames = TRUE,
+                               keep.frames = T,
                                rotation = 1,
-                               show.time = TRUE,
+                               show.time = T,
                                text.size = 1,
                                scale = T,
                                dt = 0.05, # [Gyr]

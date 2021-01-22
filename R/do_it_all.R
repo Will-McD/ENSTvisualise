@@ -85,8 +85,8 @@ do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=6
   v1 = paste0(movie.name, '.ENST.mp4', sep="")
   v2 = paste0(movie.name, '.SURFS.mp4', sep="")
 
-  modified.surfsmovie(halo, mp4file = v2, radius = r, scale =T, dt=time.step, fps=FPS, keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb)
-  modified.surfsmovie.enst(halo, mp4file = v1,radius = r, scale =T, dt=time.step, fps=FPS,  col = enst.col, keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb)
+  modified.surfsmovie(halo, mp4file = v2, radius = r, dt=time.step, fps=FPS, keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb)
+  modified.surfsmovie.enst(halo, mp4file = v1,radius = r, dt=time.step, fps=FPS,  col = enst.col, keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb)
 
   side.by.side(left = v2, right = v1, output = paste0(movie.name,'.mp4'))
 

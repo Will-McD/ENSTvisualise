@@ -7,7 +7,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
                                     velocity.conversion = 0.00102269032*(H0/100), # [-] (velocity unit)/(length unit/Gyr) at z=0
                                     keep.frames = TRUE,
                                     rotation = 1,
-                                    scale = T,
+                                    scale = F,
                                     dt = 0.05, # [Gyrs]
                                     f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter) [Solar mass /h]
                                     png.size = c(300,300),
@@ -95,7 +95,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #'A boolean value, which determines if the frames shown in the movie
   #'are co-moving or physical. If scale is True then the frames shows an image of
   #'radius / scalefactor else if False then the frames show an image of radius.
-  #'Naturally it is True.
+  #'Naturally it is False.
   #'
   #'@param dt
   #'A value in Gyrs determining the size of the timestep between each frame, how much
@@ -180,14 +180,14 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   call = sprintf('rm -rf %s; mkdir %s',dir,dir)
   system(call)
 
-  # determine scale
-  if (is.null(radius)) {
-    str = snstr(snapshot_max)
-    x = cbind(track$particles[[str]]$rx,track$particles[[str]]$ry,track$particles[[str]]$rz)
-    x0 = apply(x,2,mean) # geometric centre
-    radius = sqrt(max(apply(t(t(x)-x0)^2,1,sum)))
-  }
-  width = 2*radius*sqrt(aspect)
+  ## determine scale
+  #if (is.null(radius)) {
+  #  str = snstr(snapshot_max)
+  #  x = cbind(track$particles[[str]]$rx,track$particles[[str]]$ry,track$particles[[str]]$rz)
+  #  x0 = apply(x,2,mean) # geometric centre
+  #  radius = sqrt(max(apply(t(t(x)-x0)^2,1,sum)))
+  #}
+  #width = 2*radius*sqrt(aspect)
 
 
   # determine scale & rotation
@@ -223,6 +223,8 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   lbt.range = range(t.plot)
   cat(sprintf('interpolated look-back time range: (%f, %f) [Gyrs]\n', lbt.range[2], lbt.range[1]))
 
+  Shell <<- generate.empty.data()
+
   # produce frames
   if(!is.null(specify.frame)){loop = specify.frame}else{loop = seq_along(t.plot)}
   for (frame in loop){
@@ -243,8 +245,8 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     ID.table <<- generate.particle.id.table.4(x,v, species=1)
 
     #divide populations for images and  set up data structures for calculating enstrophy
-    Population <<- generate.empty.data()
-    Storage <<- generate.empty.data()
+    Population <<- Shell
+    Storage <<- Shell
     population.levels()
     Population[[1]] = length(ID.table$RX)
 
@@ -275,8 +277,9 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
     par(mar = c(0, 0, 0, 0))
 
     if(t.plot[frame] == t.plot[length(t.plot)]){f.255 = T}else{f.255 = F}
+    if(scale){s = sf[frame]}else{s = NULL}
 
-    plot_enst(max.layer=7,smoothing=1/3,gamma=0.01, scale = sf[frame], final=f.255,  col.palette = col) # create raster image of the layered enstrophy
+    plot_enst(max.layer=7,smoothing=1/3,gamma=0.01, scale = s, final=f.255,  col.palette = col) # create raster image of the layered enstrophy
 
 
     grDevices::dev.off() # Close the pdf file

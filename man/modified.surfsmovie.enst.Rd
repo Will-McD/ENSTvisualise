@@ -18,7 +18,7 @@ modified.surfsmovie.enst(
   velocity.conversion = 0.00102269032 * (H0/100),
   keep.frames = TRUE,
   rotation = 1,
-  scale = T,
+  scale = F,
   dt = 0.05,
   f = c(1.17e+08, 6.29e+08),
   png.size = c(300, 300),
@@ -75,7 +75,7 @@ in radians in the positive geometric sense.}
 \item{scale}{A boolean value, which determines if the frames shown in the movie
 are co-moving or physical. If scale is True then the frames shows an image of
 radius / scalefactor else if False then the frames show an image of radius.
-Naturally it is True.}
+Naturally it is False.}
 
 \item{dt}{A value in Gyrs determining the size of the timestep between each frame, how much
 the look-back time advances per frame. Naturally set to 0.02Gyrs}
