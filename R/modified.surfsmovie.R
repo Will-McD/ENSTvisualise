@@ -3,14 +3,13 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                mp4file, fps = 60,
                                H0 = 70, OmegaM = 0.3, OmegaL = 0.7,
                                velocity.conversion = 0.00102269032*(H0/100), # [-] (velocity unit)/(length unit/Gyr) at z=0
-                               #dt = 0.05, # [Gyr] if set to NULL, no extrapolation is chosen
                                keep.frames = TRUE,
                                rotation = 1,
                                show.time = TRUE,
                                text.size = 1,
                                scale = T,
-                               dt = 0.05,
-                               f = c(1.17e8, 6.29e8),
+                               dt = 0.05, # [Gyr] 
+                               f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter)
                                png.size = NULL,
                                show.R200 = F,
                                specify.frame = NULL,
@@ -31,9 +30,11 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #'
   #'@param select.species
   #'An optional value to identify if a species within the halo should be isolated for the movie.
-  #'If NULL then all species will be included,
-  #'otherwise a numerical value to represent which species to be isolated is used.
-  #'i.e) If the movie is to be of only gas particles from a hydrodynamic simulation then a value of 1 is used
+  #'If NULL then all species will be included, otherwise a numerical value to represent which
+  #' species to be isolated is used.
+  #'
+  #'    1 = Baryon
+  #'    2 = Dark Matter
   #'
   #'@param radius
   #'An optional value of the radius given in the simulation units of movie to be
@@ -252,7 +253,6 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
       diagonal = sqrt(prod(dim(rgb)[1:2]))
       s = 0.03*diagonal*text.size
       rgb = magick::image_read(rgb)
-      #print(class(rgb))
       rgb = magick::image_annotate(rgb, sprintf('Lookback time = %.2f Gyr',t.plot[frame]),
                                    size = s, location = sprintf('%+d%+d',round(1.8*s),round(s)), color = 'white', font='sans', degrees=90)
       rgb = as.numeric(rgb[[1]])[,,1:3]
@@ -307,8 +307,6 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   linuxspaces = function(txt) gsub(' ','\\\\ ',txt)
   call = sprintf('rm -rf %s',mp4file)
   system(call)
-
-  #if(scale){fps = 30}
 
   call = sprintf('ffmpeg -r %d -f image2 -s %dx%d -i %sframe_%%06d.png -vcodec libx264 -crf 18 -pix_fmt yuv420p %s -loglevel quiet',
                  fps,dim(rgb)[1],dim(rgb)[2],linuxspaces(dir),linuxspaces(mp4file))
