@@ -4,6 +4,10 @@ plot_enst = function(max.layer=5,smoothing=1/3,gamma=0.01, scale=NULL, final=F, 
   #'
   #' Plot the enstrophy from the refined grid algorithm
   #'
+  #' @importFrom graphics rasterImage
+  #' @importFrom EBImage gblur
+  #' @importFrom cooltools nplot rasterflip
+  #'
   #'@description Return an image which combines each of the layers from
   #'the refined grid used to calculate enstrophy.
   #' Each layer of the enstrophy is collapsed from a 3D array into a 2D array
