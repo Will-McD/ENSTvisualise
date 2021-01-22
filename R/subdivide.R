@@ -33,7 +33,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   #'
   #' @param flag
   #' A boolean value determining if the flagged cells should be tracked, if True
-  #'  then a list is maintained showing all cells that where subdivided.
+  #'  then a data.table is maintained showing all cells that where subdivided.
   #'Naturally set to False as it slows down computational time.
   #'
   #'@export
