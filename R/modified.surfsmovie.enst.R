@@ -22,7 +22,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #' @importFrom celestial cosdistTravelTime
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
-  #' @importFrom simstar sphview
+  #' @importFrom simstar sphview paths
   #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
   #' @importFrom grDevices pdf dev.off col2rgb dev.list
   #' @importFrom graphics axis lines par rasterImage rect text
@@ -176,7 +176,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   cat(sprintf('%s snapshots unwrapped \n', wrapped))
 
   # make temporary directory for frames
-  dir = sprintf('%sframes_enst_halo_%d/',paths()$temporary,track$halo$id)
+  dir = sprintf('%sframes_enst_halo_%d/',simstar::paths()$temporary, track$halo$id)
   call = sprintf('rm -rf %s; mkdir %s',dir,dir)
   system(call)
 

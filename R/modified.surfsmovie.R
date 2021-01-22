@@ -21,7 +21,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #' @importFrom celestial cosdistTravelTime
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
-  #' @importFrom simstar sphview
+  #' @importFrom simstar sphview paths
   #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
   #' @importFrom grDevices pdf dev.off col2rgb dev.list
   #' @importFrom graphics axis lines par rasterImage rect text
