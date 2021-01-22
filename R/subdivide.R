@@ -3,6 +3,9 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
 
   #'Recursively Subdivide particles into a 3 x 3 x 3 grid and calculate the enstrophy.
   #'
+  #' @importFrom data.table data.table
+  #'
+  #'
   #'@description
   #'From the input particles ID's place the particles into a 3 x 3 x 3 grid with
   #'a side length of Global.L/(3^n) around the center given.
