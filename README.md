@@ -8,4 +8,7 @@ This repository is largley dependant on code from the Simstar and Surfssuite rep
 https://github.com/obreschkow/simstar & https://github.com/obreschkow/surfsuite.
 
 Installation of ffmpeg is required for the compiling of the mp4 files to fully visualise the data. 
-Before running funcitons define the global intiger value Global.nmax 
+
+Before running funcitons define the global intigers Global.L and Global.nmax, 
+  Global.L = 3*R_200
+  Global.nmax ~ 7
