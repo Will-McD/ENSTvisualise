@@ -3,6 +3,8 @@ generate.particle.id.table.4 = function(x, v, species=1){
 
   #' Make Table of Particle IDs, Location and Velocities
   #'
+  #' @importFrom data.table data.table
+  #'
   #' @description  Returns a data.table of each of the particles of the selected
   #'species in the cluster. The data table contains each particles location and
   #'velocity in SI units relative to the center of Mass
@@ -64,7 +66,7 @@ generate.particle.id.table.4 = function(x, v, species=1){
 
 
   #create the data.table of particle ID, location and velocities
-  cluster.data =  data.table(
+  cluster.data =  data.table::data.table(
     RX = rx,
     RY = ry,
     RZ = rz,
