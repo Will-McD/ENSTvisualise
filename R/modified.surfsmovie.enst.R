@@ -8,8 +8,8 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
                                     keep.frames = TRUE,
                                     rotation = 1,
                                     scale = T,
-                                    dt = 0.05,
-                                    f = c(1.17e8, 6.29e8),
+                                    dt = 0.05, # [Gyrs]
+                                    f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter) [Solar mass /h]
                                     png.size = c(300,300),
                                     specify.frame = NULL,
                                     col = NULL,
@@ -98,7 +98,7 @@ modified.surfsmovie.enst = function(halo, radius = NULL, aspect = 1,
   #'@param f
   #'A vector containing the mass fraction of particles within
   #'the simulation in simulation units (solar_Mass / h). Naturally set to the
-  #'mass fraction in the SURFS simulation L210N1024NR (6.29e8, 1.17e8), {DM, Bar}
+  #'mass fraction in the SURFS simulation L210N1024NR (1.17e8, 6.29e8), {Baryon, Dark Matter}
   #'
   #'@param png.size
   #'An optional value that determines the size of the png files produced and
