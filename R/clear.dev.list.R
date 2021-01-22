@@ -4,7 +4,7 @@ clear.dev.list = function(){
   #'
   #'Clears the dev. list
   #'
-  #'importFrom grDevices dev
+  #' @importFrom grDevices dev
   #'
   #'@description
   #' Calls dev.off() x many times, x being the number of items in dev.list()
