@@ -4,6 +4,8 @@ unwrap = function(frame, snap=1, half.box.size = 105){
   #'
   #'Unwarp a halo
   #'
+  #' @importFrom pracma mod
+  #'
   #'@description
   #'Halos can sometimes get wrapped around the edges of their box and
   #'as a result not be fully connected.
@@ -29,7 +31,7 @@ unwrap = function(frame, snap=1, half.box.size = 105){
     if((max(frame[[i]]) - min(frame[[i]])) >  half.box.size){
 
       half.range = rep( half.box.size, n.p)
-      frame[[i]] = mod(frame[[i]] + half.range, 2 * half.box.size)
+      frame[[i]] = pracma::mod(frame[[i]] + half.range, 2 * half.box.size)
       print(paste(c('x', 'y','z')[i],snap ,'unwrapped'))
     }
   }
