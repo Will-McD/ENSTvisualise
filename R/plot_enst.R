@@ -75,6 +75,7 @@ plot_enst = function(max.layer=5,smoothing=1/3,gamma=0.01, scale=NULL, final=F, 
     img[,,i-1] = lim(gblur(array2d,min(smoothing*3^(max.layer-i)),max.smooth),min=0,max=1e99)
   }
 
+  print(dim(array2d))
 
   if(is.null(col.palette)){col = cubehelix(1e3)}else{col = col.palette} # define the colour palette to use
 

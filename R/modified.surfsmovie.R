@@ -241,6 +241,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
         rgb = sphview(x, track$particles$species, screen=FALSE, rotation=rot, weight = NULL, center=cm, width=width/sf[frame], ...)$rgb
 
       }else{
+        print(c(Global.L,sf[frame], width, width/sf[frame]))
         rgb = sphview(x, track$particles$species, screen=FALSE, rotation=rot, weight = NULL, center=cm, width=width/sf[frame], ngrid=png.size, ...)$rgb
       }
 
