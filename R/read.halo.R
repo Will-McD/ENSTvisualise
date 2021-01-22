@@ -3,6 +3,8 @@ read.halo = function(path='/Users/will_mcd/Documents/project/the halos/', halo.f
 
   #'Read in the halo hdf5 file
   #'
+  #'@importFrom hdf5 h5read
+  #'
   #'@description  Read in the data from the halo's hdf5 file (halo.file) from
   #'the given location (path) and return all the data contained in the file as
   #'a list type object.

@@ -16,12 +16,10 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     data.table,
-    rgl,
     rhdf5,
     magicaxis,
     cooltools,
     devtools,
-    roxygen2,
     docstring,
     dplyr,
     pracma,
@@ -33,4 +31,5 @@ Imports:
     viridis,
     imager,
     grDevices,
-    celestial
+    celestial,
+    graphics
