@@ -51,7 +51,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
     id = id # keep track of their ids
   )
 
-  index2.0 = index2.0[!(x.i < 1 | x.i > 3 | y.i < 1 | y.i > 3 | z.i < 1 | z.i > 3),] # remove partiles which do not belong inside any of the boxes
+  index2.0 = index2.0[!(x.i < 1 | x.i > 3 | y.i < 1 | y.i > 3 | z.i < 1 | z.i > 3),] # remove particles which do not belong inside any of the boxes
 
   # convert 3x3x3 location into the box number, an integer between 1 and 27, i.e) (3, 2, 1) -> 6
   # improves the speed of calculations by having this notation

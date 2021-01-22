@@ -10,9 +10,8 @@ do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=6
   #' of solenoidal turbulence).
   #'
   #'The video on the left is the halo showing Dark Matter
-  #'(Red) and Baryons (Blue).
+  #'(Blue) and Baryons (Red).
   #'The video on the right is the enstrophy
-  #'
   #'
   #'
   #'@param halo.hdf5.file

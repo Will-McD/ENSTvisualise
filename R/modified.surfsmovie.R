@@ -33,7 +33,11 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #'An optional value to identify if a species within the halo should be isolated for the movie.
   #'If NULL then all species will be included,
   #'otherwise a numerical value to represent which species to be isolated is used.
-  #'i.e) If the movie is to be of only gas particles from a hydrodynamic simulation then a value of 1 is used
+  #'
+  #'    1 = baryonic particles (gas)
+  #'
+  #'    2 = dark matter particles
+  #'
   #'
   #'@param radius
   #'An optional value of the radius given in the simulation units of movie to be
