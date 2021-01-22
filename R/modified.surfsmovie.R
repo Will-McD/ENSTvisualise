@@ -8,13 +8,19 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                show.time = TRUE,
                                text.size = 1,
                                scale = T,
-                               dt = 0.05, # [Gyr] 
+                               dt = 0.05, # [Gyr]
                                f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter)
                                png.size = NULL,
                                show.R200 = F,
                                specify.frame = NULL,
                                ...) {
 
+  #'
+  #' @importFrom celestial cosdistTravelTime
+  #' @importFrom png writePNG
+  #' @importFrom magick image_read image_annotate
+  #' @import simstar
+  #'
   #'
   #'generates a movie from a given halo hdf5 file from surfsuite.
   #'
