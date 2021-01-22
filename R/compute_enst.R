@@ -38,8 +38,6 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   #'@export
   #'
 
-  # the box side length is in meters [m] and box velocity values are kilometers per second [km/s], therefore convert length into km
-
   d.sim = c(2 *ds, ds, ds) # [Mpc/h]
   d = d.sim
   #d = d.sim * 3.086e19 # [km], convert [Mpc/h] to [km/h] as velocity is calculated in [km/s]
@@ -58,8 +56,8 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   dz.1 = c(23, 23, 14)
   dz.2 = c(5, 14, 5)
 
-  #calculate partial derivatives of the velocities of each particle w.r.t each axis of the given box.
-  # using the cross configuration only the boxes in the corners of the 3x3x3 can be ignored, therefore 9 different partial derivatives are needed.
+  # Calculate partial derivatives of the velocities of each particle w.r.t each axis of the given box.
+  # Using the cross configuration only the boxes in the corners of the 3x3x3 can be ignored, therefore 9 different partial derivatives are needed.
 
 
   dvx.dx = (X[dx.1]-X[dx.2])/d
@@ -75,10 +73,10 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   dvz.dz = (Z[dz.1]-Z[dz.2])/d
 
 
-  #compute the curl w.r.t each axis in the box
-  #curl of f(x,y,z) =  (dz/dy - dy/dz)i + (dx/dz - dz/dx)j + (dy/dx - dx/dy)k
-  #curl = c(dvz.dy-dvy.dz, dvx.dz-dvz.dx, dvy.dx-dvx.dy)
-  #curl.x = c(a, bb, bc, cb, cc)
+  # Compute the curl w.r.t each axis in the box
+  # Curl of f(x,y,z) =  (dz/dy - dy/dz)i + (dx/dz - dz/dx)j + (dy/dx - dx/dy)k
+  # Curl = c(dvz.dy-dvy.dz, dvx.dz-dvz.dx, dvy.dx-dvx.dy)
+  # Curl.x = c(a, bb, bc, cb, cc)
 
   curl.x = c(
     dvz.dy[1]-dvy.dz[1],
@@ -104,12 +102,12 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
     dvy.dx[3]-dvx.dy[3]
   )
 
-  #compute stable enst for center of cross
+  # Compute stable enst for center of cross
   enst = 0.5 * vectornorm(c(curl.x[1], curl.y[1], curl.z[1]))^2
 
   if(noise){error = 0.5*sd(vectornorm(expand.grid(curl.x[-1], curl.y[-1], curl.z[-1])))^2}else{error=NA}
 
-  #normalise.enst
+  # Normalise enst
   if(!is.null(normalise)){
     enst = enst * normalise
     error = error * normalise
