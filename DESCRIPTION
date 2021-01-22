@@ -28,7 +28,6 @@ Imports:
     EBImage,
     simstar,
     png,
-    plotrix,
     magick,
     viridis,
     imager,
