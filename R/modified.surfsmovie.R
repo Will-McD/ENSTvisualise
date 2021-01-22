@@ -22,7 +22,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
   #' @import simstar
-  #'
+  #' @importFrom grDevices dev
   #'
   #'
   #'@description
