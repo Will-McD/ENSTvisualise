@@ -7,6 +7,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                rotation = 1,
                                show.time = T,
                                text.size = 1,
+                               text.colour = 'white',
                                scale = T,
                                dt = 0.05, # [Gyr]
                                f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter)
@@ -91,6 +92,10 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #'
   #'@param text.size
   #'A scaling factor for the text size used for the look-back time
+  #'
+  #'@param text.colour
+  #'The colour of the text for the displayed look-back time,
+  #'Naturally set to white as the background is set to black.
   #'
   #'@param scale
   #'A boolean value, which determines if the frames shown in the movie
@@ -264,7 +269,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
       s = 0.03*diagonal*text.size
       rgb = magick::image_read(rgb)
       rgb = magick::image_annotate(rgb, sprintf('Lookback time = %.2f Gyr',t.plot[frame]),
-                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(s)), color = 'white', font='sans', degrees=90)
+                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(s)), color = text.colour, font='sans', degrees=90)
       rgb = as.numeric(rgb[[1]])[,,1:3]
     }
 

@@ -19,6 +19,7 @@ modified.surfsmovie(
   rotation = 1,
   show.time = T,
   text.size = 1,
+  text.colour = "white",
   scale = T,
   dt = 0.05,
   f = c(1.17e+08, 6.29e+08),
@@ -72,6 +73,9 @@ in radians in the positive geometric sense.}
 \item{show.time}{A boolean specifying whether the look-back time is displayed}
 
 \item{text.size}{A scaling factor for the text size used for the look-back time}
+
+\item{text.colour}{The colour of the text for the displayed look-back time,
+Naturally set to white as the background is set to black.}
 
 \item{scale}{A boolean value, which determines if the frames shown in the movie
 are co-moving or physical. If scale is True then the frames shows an image of
