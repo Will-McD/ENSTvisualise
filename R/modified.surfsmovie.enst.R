@@ -23,7 +23,7 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   #' @importFrom png writePNG
   #' @importFrom magick image_read image_annotate
   #' @importFrom simstar sphview paths
-  #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3
+  #' @importFrom cooltools nplot rasterflip lim griddata2 kde2 quadrupole rotation3 cosmofct
   #' @importFrom grDevices pdf dev.off col2rgb dev.list
   #' @importFrom graphics axis lines par rasterImage rect text
   #' @importFrom ggplot2 qplot
@@ -219,7 +219,7 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   #calculate scalefactors
   t.plot = rev(seq(min(snapshots$t),max(snapshots$t),dt))
 
-  cosmo = cosmofct(0, 10, H0 = 70, OmegaM = 0.3, OmegaL = 0.7)
+  cosmo = cooltools::cosmofct(0, 10, H0 = 70, OmegaM = 0.3, OmegaL = 0.7)
   sf = 1 / ( cosmo$t2z(t.plot) + 1 )
   lbt.range = range(t.plot)
   cat(sprintf('interpolated look-back time range: (%f, %f) [Gyrs]\n', lbt.range[2], lbt.range[1]))
