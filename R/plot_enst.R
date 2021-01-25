@@ -78,9 +78,11 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
 
   if(is.null(col.palette)){col = cubehelix(1e3)}else{col = col.palette} # define the colour palette to use
 
+
   par(bg=bg.col)
 
   if(is.null(scale)){s = 1}else{s=scale}
+
 
   cooltools::nplot(xlim=c(-dim(array2d)[1] * s, dim(array2d)[1] * s), ylim=c(-dim(array2d)[1] * s,dim(array2d)[1] * s),cex=0.25, pty='s') # empty plot as template for the raster image
 
@@ -96,8 +98,8 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
   img = lim(img, min=floor, max=roof)
 
 
-  img = log10(1e2*img + 1.5) * 0.175
-
+  #img = log10(1e2*img + 1.5) * 0.175
+  img = log10(5e2*img + 1.5) * 0.175
 
 
   colvals = pmin(1e3,pmax(1,ceiling(img*1e3)))
