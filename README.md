@@ -14,5 +14,5 @@ Usually defined as:  Global.L = 3*R_200 & Global.nmax = 7
 
 A lower Global.nmax value will reduce the computational time, but also reduce the resolution of the images as it outlines the maximum layer of the adaptive mesh allowed. 
 
-
+Computational time will vary from halo to halo depending on the number of particles within the halo and the density of the halo, a more dense halo will increase the computational time as there will be a greater number of points of enstrophy calculated. Therefore there will be a larger vector used to store the enstrophy, density and noise. This also implies that there will be more points to smooth and compile when plotting the density weighted enstrophy. 
 
