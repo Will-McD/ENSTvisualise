@@ -48,7 +48,7 @@ Computational time can be reduced through a reduced Global.nmax, however this wi
 
 (3^(5-1) is used as the Global lists which store each layer of data are indexed from 1, with 1 being the layer which has an empty grid or the layer that is the halo itself with no grid applied i.e) just the box of side length R200 )
 
-(Global.nmax = 6 works for majority of cases, however with some large halos a global.nmax of 7 is needed. 
+(Global.nmax = 6 works for majority of cases, however with some large halos a global.nmax of 7 or greater is needed. 
 !!! There is a relativly large slowdown between 6 and 7 on {my machine atleast} !!! 
 The
 )
