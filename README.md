@@ -9,8 +9,10 @@ https://github.com/obreschkow/simstar & https://github.com/obreschkow/surfsuite.
 
 Installation of ffmpeg is required for the compiling of the mp4 files to fully visualise the data. 
 
-Before running funcitons define the global intigers Global.L and Global.nmax, usually defined as:
+The functions within this repository used to create the mp4 files rely on defining two global variables and the updating of two global lists. Therefore if not using the do_it_all function define the global intigers Global.L and Global.nmax prior to using other functions. 
+Usually defined as:  Global.L = 3*R_200 & Global.nmax = 7
 
-Global.L = 3*R_200 & Global.nmax = 7
+A lower Global.nmax value will reduce the computational time, but also reduce the resolution of the images as it outlines the maximum layer of the adaptive mesh allowed. 
 
-A lower Global.nmax value will reduce the computational time
+
+
