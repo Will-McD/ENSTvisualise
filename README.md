@@ -33,7 +33,7 @@ The other parameters can be adjusted as desired to alter the movie length, fps, 
 
 
 
-  WIHTOUT THE DO_IT_ALL FUNCTION:
+  WITHOUT THE DO_IT_ALL FUNCTION:
   
   
 The functions within this repository used to create the mp4 files rely on defining two global variables and the updating of two-three global lists. Therefore if not using the do_it_all function define the global intigers Global.L and Global.nmax prior to using other functions. 
@@ -52,7 +52,7 @@ Computational time can be reduced through a reduced Global.nmax, however this wi
 !!! There is a relativly large slowdown between 6 and 7 on {my machine atleast} !!! 
 )
 
-Changes to the Global.nmax can also alter the brightness of the images produced as it will affect the level to which the patricle density is also calculated. Therefore if after adjusting the Global.nmax the brightness seems either too high or low, alter the brightness scale within the plot_enst function.
+Changes to the Global.nmax can also alter the brightness of the images produced as it will affect the level to which the patricle density is also calculated and the level of smoothing. Therefore if after adjusting the Global.nmax the brightness seems either too high or low, alter the brightness scale within the plot_enst function.
 
 
 
