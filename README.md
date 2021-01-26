@@ -11,7 +11,6 @@ Installation of ffmpeg is required for the compiling of the mp4 files to fully v
 
 Before running funcitons define the global intigers Global.L and Global.nmax, usually defined as:
 
-  Global.L = 3*R_200
-  Global.nmax = 7
+  Global.L = 3*R_200 & Global.nmax = 7
 
 A lower Global.nmax value will reduce the computational time
