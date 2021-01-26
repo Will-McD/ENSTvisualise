@@ -50,8 +50,10 @@ Computational time can be reduced through a reduced Global.nmax, however this wi
 
 (Global.nmax = 6 works for majority of cases, however with some large halos a global.nmax of 7 or greater is needed. 
 !!! There is a relativly large slowdown between 6 and 7 on {my machine atleast} !!! 
-The
 )
+
+Changes to the Global.nmax can also alter the brightness of the images produced as it will affect the level to which the patricle density is also calculated. Therefore if after adjusting the Global.nmax the brightness seems either too high or low, alter the brightness scale within the plot_enst function.
+
 
 
   COMPUTATIONAL TIME WARNING: 
