@@ -4,8 +4,16 @@
 \alias{time_ff}
 \title{Free Fall Time in Gyrs}
 \usage{
-time_ff(species = halo$particles$species)
+time_ff(species = halo$particles$species, mass.frac = c(1.17e+08, 6.29e+08))
+}
+\arguments{
+\item{species}{A list or vector type object containing numeric values for each particle in the halo's species}
+
+\item{mass.frac}{A vector containing the mass fraction of the individual species of
+particle within the halo in simulation units (solar_mass / h).
+Naturally set to the mass fraction from SURFS L210N1024NR.\preformatted{         (Baryons, Dark Matter)
+}}
 }
 \description{
-!!! NOT FINISHED YET !!!
+Free Fall Time in Gyrs
 }

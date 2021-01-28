@@ -2,7 +2,7 @@
 % Please edit documentation in R/change.mp4.length.R
 \name{change.mp4.length}
 \alias{change.mp4.length}
-\title{Change the length of a .mp4 file}
+\title{Change the length of an .mp4 file}
 \usage{
 change.mp4.length(time.mult, input, output, overwrite = F)
 }

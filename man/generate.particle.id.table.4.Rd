@@ -4,24 +4,20 @@
 \alias{generate.particle.id.table.4}
 \title{Make Table of Particle IDs, Location and Velocities}
 \usage{
-generate.particle.id.table.4(x, v, species = 1)
+generate.particle.id.table.4(
+  x,
+  v,
+  select.species = 1,
+  species = track$particle$species,
+  p.mass = c(1.17e+08, 6.29e+08)
+)
 }
 \arguments{
-\item{Halo}{A hdf5 file that has been revrived using SURFsuite already read into
-Rstudio using h5read(). Contains all the
-particles locations, velocities, species, ID, mass and scale factor.}
+\item{x}{A matrix, array type object containing particle positions \link{Mpc/h}}
 
-\item{Snapshot}{A Boolean value.
+\item{v}{A matrix, array type object containing particle velocities \link{km/s}}
 
-TRUE when a halo file has multiple snapshots within it.
-If TRUE it will retrieve the halos snapshot_199 (z = 0)
-(this is designed for the SURFS L210N1024NR simulation
-complied through Surfsuite).
-
-FALSE when halo file does not contain multiple snapshots and this
-function will assume that the snapshot is at z=0}
-
-\item{Species}{An intiger value of either 1 or 2.
+\item{select.species}{An intiger value of either 1 or 2.
 
 1 = baryonic particles (gas)
 
@@ -29,6 +25,19 @@ function will assume that the snapshot is at z=0}
 
 Naturally set to 1. This is used to calculate the enstrophy,
 which is dependant on gas particles, therefore species 1.}
+
+\item{species}{An  array type object containing the species number for every particle
+within the halo being observed.}
+
+\item{p.mass}{A vector object containing the mass values for each of the species within the
+simulation in simulaiton units \link{Solar Mass / h}, in the order of the
+species indexes.
+
+For L210N1024NR where there are only baryon (1) and dark matter (2)
+therefore p.mass is naturally set to (1.17e8, 6.29e8).
+
+This is used for calculating the center of mass of each snapshot or frame,
+so that each particle can be centered on the c.o.m.}
 }
 \description{
 Returns a data.table of each of the particles of the selected
@@ -39,4 +48,12 @@ L210N1024NR simulation units).
 
 The particles as assigned an ID by their index in the table.
 The table has dimensions = (6, number of particles of selected species)
+}
+\examples{
+To make a data.table of only the baryons within a halo,
+
+x = interpolate.positions.2(track, snapshots, t.plot[frame])[[1]]
+v = interpolate.positions.2(track, snapshots, t.plot[frame])[[2]]
+generate.particle.id.table.4(x, v, select.species = 1, species=track$particle$species, p.mass = c(1.17e8, 6.29e8))
+
 }

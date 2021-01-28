@@ -1,7 +1,17 @@
 
-do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=60, enst.col = NULL, keep.frames=T, keep.movies=T, draw.R200 = F, specify.frame.numb = NULL){
+do_it_all = function(halo.hdf5.file, movie.name,
+                     time.step=0.025,
+                     n.max=6,
+                     FPS=60,
+                     enst.col = NULL,
+                     keep.frames=T,
+                     keep.movies=T,
+                     draw.R200 = F,
+                     specify.frame.numb = NULL,
+                     dynam.plot =F
+                     ){
 
-  #'Create a movie showing a halo and its turbulence
+  #'Create a movie visualising a halo's morphology and enstrophy over time.
   #'
   #'@description Using a hdf5 file created by surfsuite of a halo from the SURFS
   #'simulation an mp4 file is created. This mp4 file is a movie of a side by
@@ -11,14 +21,14 @@ do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=6
   #'
   #'The video on the left is the halo showing Dark Matter
   #'(Blue) and Baryons (Red).
-  #'The video on the right is the enstrophy
+  #'The video on the right is the density weighted enstrophy
   #'
   #'
   #'@param halo.hdf5.file
   #'The path to the hdf5 file containing the halo
   #'
   #'@param movie.name
-  #'The name of the mp4 file to be created
+  #'The name of the mp4 file to be created, include the .mp4
   #'
   #'@param time.step
   #'The interval of time in Gyrs between frames,
@@ -26,8 +36,8 @@ do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=6
   #'time.step value results in more interpolated and extrapolated steps of the halo.
   #'
   #'@param n.max
-  #'the maximum layer of the adaptive mesh used to calculate the enstrophy,
-  #'naturally it is set to 7
+  #'the maximum layer of the adaptive mesh used to calculate the enstrophy.
+  #'Naturally it is set to 6
   #'
   #'@param FPS
   #'The frames per second of the the mp4 file
@@ -55,14 +65,32 @@ do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=6
   #'An optional vector, giving the frame numbers to be used to generate images
   #'for the movie.
   #'
+  #'@param dynam.plot
+  #'A boolean value to determine if the plots size and smoothing should be
+  #'adjusted for the levels of the adaptive mesh occupied below the maximum
+  #'level defined.
+  #'Naturally set to False
+  #'
+  #'If True it is enabled;
+  #'Reduces computational time but reduces the quality of the image.
+  #'The resolution and smoothness of the images produced are of lowered as the
+  #'layers of the mesh when compiled will only expand
+  #'to fit the highest occupied layer and smooth the img at that level.
+  #'
+  #'If False it is disabled; When compiling the layers of the mesh they will all
+  #' be expanded to the Global.nmax and smoothed at that level.
+  #'
+  #'    !!!!NOT FULLY TESTED YET !!!!!
+  #'It is in a stage of working, however has not be tested as extensively.
+  #'
   #'
   #'@examples
   #'Creating a side by side movie with R200 being shown and a timestep of 0.02 Gyrs.
-  #'do.it.all(halo.hdf5.file= "/Users/..../halo4.hdf", movie.name = "halo4_test", time.step=0.02, draw.R200 = T)
+  #'do.it.all(halo.hdf5.file= "/Users/..../halo4", movie.name = "halo4_test.mp4", time.step=0.02, draw.R200 = T)
   #'
   #'A movie where if in full it would be 10s at 60 fps, therefore 600 frames.
-  #'However to have the movie only be on the final 5 seconds of this whole movie:
-  #'do.it.all(halo.hdf5.file= "/Users/..../halo4.hdf", movie.name = "halo4_test", specify.frame.numb = seq(499, 600))
+  #'However to have the movie only be on the final second of this whole movie:
+  #'do.it.all(halo.hdf5.file= "/Users/..../halo4", movie.name = "halo4_test.mp4", specify.frame.numb = seq(499, 600))
   #'
   #' @export
   #'
@@ -71,24 +99,35 @@ do_it_all = function(halo.hdf5.file, movie.name, time.step=0.025, n.max=7, FPS=6
   halo <<- read.halo(hdf5.file = halo.hdf5.file)
 
 
-  cat(sprintf(' making movies for %s \n', halo.hdf5.file))
+  cat(sprintf('Making  %s \n', movie.name))
 
   ID.table = NA
   Storage = NA
   Population = NA
 
-  Global.L <<- 3 * R200.calc()
+  Global.L <<- 3 * R200.calc(species = halo$particles$species)
   Global.nmax <<- n.max
   n.p = halo$halo$n_particles
   r = 1.5 * R200.calc()
 
-  v1 = paste0(movie.name, '.ENST.mp4', sep="")
-  v2 = paste0(movie.name, '.SURFS.mp4', sep="")
+  v1 = paste0('ENST_', movie.name, sep="")
+  v2 = paste0('SURFS_',movie.name,  sep="")
 
-  modified.surfsmovie(halo, mp4file = v2, radius = r, dt=time.step, fps=FPS, keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb)
-  modified.surfsmovie.enst(halo, mp4file = v1, mesh.width = 3 * R200.calc(), dt=time.step, fps=FPS,  col = enst.col, keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb)
+  cat(sprintf('CREATING SURFS MOVIE \n'))
+  modified.surfsmovie(
+    halo, mp4file = v2, radius = r, dt=time.step, fps=FPS,
+    keep.frames = keep.frames, show.R200=draw.R200, specify.frame = specify.frame.numb
+    )
 
-  side.by.side(left = v2, right = v1, output = paste0(movie.name,'.mp4'))
+  cat(sprintf('CREATING ENST MOVIE \n'))
+
+  modified.surfsmovie.enst(halo, mp4file = v1, mesh.width = Global.L,
+                           dt=time.step, fps=FPS,  col = enst.col,
+                           keep.frames = keep.frames, show.R200=draw.R200,
+                           specify.frame = specify.frame.numb, dynam.plot = dynam.plot
+                           )
+
+  side.by.side(left = v2, right = v1, output = paste0(movie.name))
 
   if(!keep.movies){
 

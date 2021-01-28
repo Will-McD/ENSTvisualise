@@ -1,8 +1,6 @@
 # ENSTvisualise
 Tools for the Visualisation of Turbulence within an SPH simulation
 
-Enstrophy can be numerically estimated from the SPH simulations and be used as a viable substitute solenoidal turbulence wihtin a galaxy cluster. 
-This code uses numerical enstimations of enstrophy to visualise the turbulence within a Halo from the SURFS simulations.
 
 This repository is largley dependant on code from the simstar and Surfsuite repositories and packages found at: 
 https://github.com/obreschkow/simstar & https://github.com/obreschkow/surfsuite.
@@ -60,5 +58,6 @@ Changes to the Global.nmax can also alter the brightness of the images produced 
 
 
 Computational time will vary from halo to halo depending on the number of particles within the halo and the density of the halo, a more dense halo will increase the computational time as there will be a greater number of points of enstrophy calculated. Therefore there will be a larger vector used to store the enstrophy, density and noise. This also implies that there will be more points to smooth and compile when plotting the density weighted enstrophy. 
+
 
 

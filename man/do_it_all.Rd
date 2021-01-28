@@ -2,32 +2,33 @@
 % Please edit documentation in R/do_it_all.R
 \name{do_it_all}
 \alias{do_it_all}
-\title{Create a movie showing a halo and its turbulence}
+\title{Create a movie visualising a halo's morphology and enstrophy over time.}
 \usage{
 do_it_all(
   halo.hdf5.file,
   movie.name,
   time.step = 0.025,
-  n.max = 7,
+  n.max = 6,
   FPS = 60,
   enst.col = NULL,
   keep.frames = T,
   keep.movies = T,
   draw.R200 = F,
-  specify.frame.numb = NULL
+  specify.frame.numb = NULL,
+  dynam.plot = F
 )
 }
 \arguments{
 \item{halo.hdf5.file}{The path to the hdf5 file containing the halo}
 
-\item{movie.name}{The name of the mp4 file to be created}
+\item{movie.name}{The name of the mp4 file to be created, include the .mp4}
 
 \item{time.step}{The interval of time in Gyrs between frames,
 by adjusting this value the length of the mp4 file is altered. A lower
 time.step value results in more interpolated and extrapolated steps of the halo.}
 
-\item{n.max}{the maximum layer of the adaptive mesh used to calculate the enstrophy,
-naturally it is set to 7}
+\item{n.max}{the maximum layer of the adaptive mesh used to calculate the enstrophy.
+Naturally it is set to 6}
 
 \item{FPS}{The frames per second of the the mp4 file}
 
@@ -48,6 +49,23 @@ The R200 shown is scaled by the scale factor.}
 
 \item{specify.frame.numb}{An optional vector, giving the frame numbers to be used to generate images
 for the movie.}
+
+\item{dynam.plot}{A boolean value to determine if the plots size and smoothing should be
+adjusted for the levels of the adaptive mesh occupied below the maximum
+level defined.
+Naturally set to False
+
+If True it is enabled;
+Reduces computational time but reduces the quality of the image.
+The resolution and smoothness of the images produced are of lowered as the
+layers of the mesh when compiled will only expand
+to fit the highest occupied layer and smooth the img at that level.
+
+If False it is disabled; When compiling the layers of the mesh they will all
+be expanded to the Global.nmax and smoothed at that level.
+
+!!!!NOT FULLY TESTED YET !!!!!
+It is in a stage of working, however has not be tested as extensively.}
 }
 \description{
 Using a hdf5 file created by surfsuite of a halo from the SURFS
@@ -58,14 +76,14 @@ of solenoidal turbulence).
 
 The video on the left is the halo showing Dark Matter
 (Blue) and Baryons (Red).
-The video on the right is the enstrophy
+The video on the right is the density weighted enstrophy
 }
 \examples{
 Creating a side by side movie with R200 being shown and a timestep of 0.02 Gyrs.
-do.it.all(halo.hdf5.file= "/Users/..../halo4.hdf", movie.name = "halo4_test", time.step=0.02, draw.R200 = T)
+do.it.all(halo.hdf5.file= "/Users/..../halo4", movie.name = "halo4_test.mp4", time.step=0.02, draw.R200 = T)
 
 A movie where if in full it would be 10s at 60 fps, therefore 600 frames.
-However to have the movie only be on the final 5 seconds of this whole movie:
-do.it.all(halo.hdf5.file= "/Users/..../halo4.hdf", movie.name = "halo4_test", specify.frame.numb = seq(499, 600))
+However to have the movie only be on the final second of this whole movie:
+do.it.all(halo.hdf5.file= "/Users/..../halo4", movie.name = "halo4_test.mp4", specify.frame.numb = seq(499, 600))
 
 }

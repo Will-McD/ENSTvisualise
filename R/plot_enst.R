@@ -1,5 +1,12 @@
 
-plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, col.palette = NULL, bg.col='black') {
+plot_enst = function(max.layer=Global.nmax,
+                     smoothing=1/3,
+                     alpha = 5e2, beta = 1.5, gamma=0.175,
+                     scale=NULL,
+                     final=F,
+                     col.palette = NULL,
+                     bg.col='black'
+                     ) {
 
   #'
   #' Plot the enstrophy from the refined grid algorithm
@@ -8,22 +15,23 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
   #' @importFrom EBImage gblur
   #' @importFrom cooltools nplot rasterflip
   #'
-  #'@description Return an image which combines each of the layers from
-  #'the refined grid used to calculate enstrophy.
-  #' Each layer of the enstrophy is collapsed from a 3D array into a 2D array
-  #'  using the pop.weighted.enst function, before then being expanded to the
-  #'  same size 2D array as that of the max.layer selected.
+  #'@description Return an image which compiles each of the layers from
+  #'the refined adaptive mesh.
+  #'Each layer of the mesh is collapsed from a 3D array into a 2D array and
+  #'weighted by density, before then being expanded to the same size 2D array as
+  #' that of the layer above it in the adaptive mesh.
   #'
   #' As each layer is a factor of 3 greater than the previous
   #' ie) 3x3x3 -> 9x9x9 -> 27x27x27 .... each layer is expanded by this logic.
   #'
-  #' The 2D layers are then summed together and smoothed in accordance with the
-  #' smoothing values selected using a Gaussian filter/brush of the gblur function.
+  #'The 2D layers are summed together and smoothed in accordance with the
+  #'smoothing values selected using a Gaussian filter/brush of the gblur f
+  #'unction by the value of the smoothing parameter.
   #'
   #'
-  #' The final 'layered' image from superimposing each smoothed layer is then
-  #' smoothed again by the gamma value before plottinh the matrix in a cube-helix c
-  #' olour mapping as a raster image.
+  #'The final 'layered' image from superimposing each smoothed layer is then
+  #'smoothed again by the gamma value before plotting the matrix with the colour
+  #' palette given in the col.palette parameter.
   #'
   #'
   #'@param max.layer
@@ -36,9 +44,28 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
   #'The smoothing values scale with the size of the grid selected to account for
   #' the expansion of each grid.
   #'
-  #'@param gamma alters the prominence of the fine structure in the image, where
-  #' gamma is a constant to scale the values of the matrix 'X' in accordance with
-  #' log(X/max(X) + gamma)
+  #'@param alpha
+  #'A numerical value which is a scale factor in the brightness scale; given as
+  #'
+  #'img = log10( alpha x img + beta ) x gamma
+  #'
+  #'alpha gives the floor or base order of magnitude allowed.
+  #'
+  #'@param beta
+  #'A numerical value which is a constant to add in the brightness scale; given as
+  #'
+  #'img = log10( alpha x img + beta ) x gamma
+  #'
+  #' assigns an extra value to the floor given
+  #'
+  #'
+  #'@param gamma
+  #'
+  #'A numerical value which is a scale factor in the brightness scale; given as
+  #'
+  #'img = log10( alpha x img + beta ) x gamma
+  #'
+  #'The total scale factor for the brightness scale
   #'
   #'
   #'@param scale
@@ -64,12 +91,12 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
   #' @export
   #'
 
-
+  # Storage and Population have a buffer layer of 1x1x1 grid as their first entry therefore need to subtract 1 from the max.layer to have same dimensions.
   img = array(NA,c(3^(max.layer-1),3^(max.layer-1),max.layer-1))
   max.smooth = 3^(max.layer-2)
 
   for (i in 2:max.layer) {
-    array2d = pop.weighted.enst(Storage, i)
+    array2d = density_weighted_enst(Storage, i)
     array2d[is.na(array2d)] = 0
     array2d = expand(array2d,n=3^(max.layer-i))
     img[,,i-1] = lim(gblur(array2d,min(smoothing*3^(max.layer-i)),max.smooth),min=0,max=1e99)
@@ -89,17 +116,15 @@ plot_enst = function(max.layer,smoothing=1/3,gamma=0.01, scale=NULL, final=F, co
   img = apply(img,c(1,2),sum) # collapse the array of image matrices as required.
   if(final){img = img/10}
 
-  hold.img <<- img
-
-  floor = 1e-7
+  floor = 1e-8
   roof = 3e4
 
 
   img = lim(img, min=floor, max=roof)
 
 
-  #img = log10(1e2*img + 1.5) * 0.175
-  img = log10(5e2*img + 1.5) * 0.175
+  #img = log10(5e2*img + 1.5) * 0.175
+  img = log10(alpha*img + beta) * gamma
 
 
   colvals = pmin(1e3,pmax(1,ceiling(img*1e3)))
