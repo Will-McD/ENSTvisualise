@@ -5,7 +5,7 @@
 \title{Generates a movie from a given halo hdf5 file from surfsuite.}
 \usage{
 modified.surfsmovie(
-  halo,
+  track,
   select.species = NULL,
   radius = NULL,
   aspect = 1,
@@ -19,7 +19,6 @@ modified.surfsmovie(
   rotation = 1,
   show.time = T,
   text.size = 1,
-  text.colour = "white",
   scale = T,
   dt = 0.05,
   f = c(1.17e+08, 6.29e+08),
@@ -30,7 +29,7 @@ modified.surfsmovie(
 )
 }
 \arguments{
-\item{halo}{A list containing the halo information from a given hdf5 file from surfsuite}
+\item{track}{A list containing the halo information from a given hdf5 file from surfsuite}
 
 \item{select.species}{An optional value to identify if a species within the halo should be isolated for the movie.
 If NULL then all species will be included, otherwise a numerical value to represent which
@@ -44,7 +43,9 @@ shown, if NULL then 1.5 times the virial radius will be used.}
 
 \item{aspect}{An optional value for the aspect ratio of the .mp4 file produced, naturally aspect ratio is 1 (a square).}
 
-\item{mp4file}{The file name of the .mp4 file which will be produced.}
+\item{mp4file}{The file name of the .mp4 file which will be produced.
+
+Include the .mp4 suffix}
 
 \item{fps}{An optional value for the frames per second of the movie produced, naturally
 the fps is 60}
@@ -74,9 +75,6 @@ in radians in the positive geometric sense.}
 
 \item{text.size}{A scaling factor for the text size used for the look-back time}
 
-\item{text.colour}{The colour of the text for the displayed look-back time,
-Naturally set to white as the background is set to black.}
-
 \item{scale}{A boolean value, which determines if the frames shown in the movie
 are co-moving or physical. If scale is True then the frames shows an image of
 radius / scalefactor else if False then the frames show an image of radius.
@@ -98,12 +96,13 @@ therefore the size of the mp4 files resolution.}
 }
 \description{
 This is a modified version of the surfsmovie function available in the Simstar package.
+https://github.com/obreschkow/simstar
 
 creates an .mp4 file from the provided halo list given showing the evolution
 of particles identified to be in the halo at z=0
 }
 \examples{
-halo = read.halo(hdf5.file = '/Users/..../test_halo.h5')
+halo = read.halo(hdf5.file = '/Users/..../test_halo')
 rad = R200.calc()
 modified.surfsmovie(halo, mp4file = 'test_surfs_movie.mp4', radius = rad, scale = T)
 

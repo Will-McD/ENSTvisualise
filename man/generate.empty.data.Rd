@@ -15,4 +15,6 @@ Creates a list of length 'n', where each entry 'n' is an empty
 array of dimension = (3^(n-1), 3^(n-1), 3^(n-1)).
 Each entry 'n' corresponds to a layer of the adaptive grid, where the level
 of refinement increases with n by a factor of 3.
+
+The initial layer is a buffer layer as its just a box with sidelength 3*viral radius
 }

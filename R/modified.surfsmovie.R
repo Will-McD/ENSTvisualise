@@ -1,5 +1,5 @@
 
-modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect = 1,
+modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspect = 1,
                                mp4file, fps = 60,
                                H0 = 70, OmegaM = 0.3, OmegaL = 0.7,
                                velocity.conversion = 0.00102269032*(H0/100), # [-] (velocity unit)/(length unit/Gyr) at z=0
@@ -7,7 +7,6 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
                                rotation = 1,
                                show.time = T,
                                text.size = 1,
-                               text.colour = 'white',
                                scale = T,
                                dt = 0.05, # [Gyr]
                                f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter)
@@ -30,12 +29,13 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
+  #'https://github.com/obreschkow/simstar
   #'
   #'creates an .mp4 file from the provided halo list given showing the evolution
   #'of particles identified to be in the halo at z=0
   #'
   #'
-  #'@param halo
+  #'@param track
   #'A list containing the halo information from a given hdf5 file from surfsuite
   #'
   #'@param select.species
@@ -55,6 +55,8 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #'
   #'@param mp4file
   #'The file name of the .mp4 file which will be produced.
+  #'
+  #'Include the .mp4 suffix
   #'
   #'@param fps
   #'An optional value for the frames per second of the movie produced, naturally
@@ -93,10 +95,6 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #'@param text.size
   #'A scaling factor for the text size used for the look-back time
   #'
-  #'@param text.colour
-  #'The colour of the text for the displayed look-back time,
-  #'Naturally set to white as the background is set to black.
-  #'
   #'@param scale
   #'A boolean value, which determines if the frames shown in the movie
   #'are co-moving or physical. If scale is True then the frames shows an image of
@@ -123,33 +121,34 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
   #' An optional value, a vector specifiying which frames are to be used in creating the movie
   #'
   #'@examples
-  #'halo = read.halo(hdf5.file = '/Users/..../test_halo.h5')
+  #'halo = read.halo(hdf5.file = '/Users/..../test_halo')
   #'rad = R200.calc()
   #'modified.surfsmovie(halo, mp4file = 'test_surfs_movie.mp4', radius = rad, scale = T)
   #'
   #'@export
   #'
 
+  #create a duplicate list of the halo which will be modified depending on the species
+  #track = halo
 
-  # load track
-  track = halo
+  species.all = track$particles$species
 
   if(!is.null(select.species)){
 
-    allow = which(halo$particles$species == select.species)
+    allow = which(track$particles$species == select.species)
 
-    track$particles$id = halo$particles$id[allow]
-    track$particles$species = halo$particles$species[allow]
+    track$particles$id = track$particles$id[allow]
+    track$particles$species = tracl$particles$species[allow]
 
     for(snap in 2:131){
 
-      track$particles[[snap]]$rx = halo$particles[[snap]]$rx[allow]
-      track$particles[[snap]]$ry = halo$particles[[snap]]$ry[allow]
-      track$particles[[snap]]$rz = halo$particles[[snap]]$rz[allow]
+      track$particles[[snap]]$rx = track$particles[[snap]]$rx[allow]
+      track$particles[[snap]]$ry = track$particles[[snap]]$ry[allow]
+      track$particles[[snap]]$rz = track$particles[[snap]]$rz[allow]
 
-      track$particles[[snap]]$vx = halo$particles[[snap]]$vx[allow]
-      track$particles[[snap]]$vy = halo$particles[[snap]]$vy[allow]
-      track$particles[[snap]]$vz = halo$particles[[snap]]$vz[allow]
+      track$particles[[snap]]$vx = track$particles[[snap]]$vx[allow]
+      track$particles[[snap]]$vy = track$particles[[snap]]$vy[allow]
+      track$particles[[snap]]$vz = track$particles[[snap]]$vz[allow]
 
     }
 
@@ -229,7 +228,8 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
     str = snstr(snapshots$index[frame])
 
     # make Center of Mass the center of the image
-    m = (f/sum(f))[halo$particle$species] #* 7.47e8 * 1.9889200011446e30 / 0.7, #leaving in simulation units, using halo as all particle species are needed for this
+    #m = (f/sum(f))[halo$particle$species] #* 7.47e8 * 1.9889200011446e30 / 0.7, #leaving in simulation units, using halo as all particle species are needed for this
+    m = (f/sum(f))[species.all]  #leaving in simulation units, all particle species are needed for this
 
 
     # interpolate positions
@@ -237,9 +237,9 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
       str = snstr(snapshots$index[frame])
 
       # make Center of Mass the center of the image
-      m = (f/sum(f))[halo$particle$species] #leaving in simulation units, using halo as all particle species are needed for this
+      #m = (f/sum(f))[halo$particle$species] #leaving in simulation units, using halo as all particle species are needed for this
 
-      x = interpolate.positions(track, snapshots, t.plot[frame], dt)
+      x = interpolate.positions(track, snapshots, t.plot[frame])
       cm = c(sum(x[,1]*m),sum(x[,2]*m),sum(x[,3]*m))/sum(m) #using halo as all particle species are needed for this
 
       if(is.null(png.size)){
@@ -253,7 +253,7 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
     } else {
 
       str = snstr(snapshots$index[frame])
-      x = interpolate.positions(track, snapshots, t.plot[frame])
+      x = interpolate.positions(track, snapshots, t.plot[frame], dt)
       cm = c(sum(x[,1]*m),sum(x[,2]*m),sum(x[,3]*m))/sum(m)
 
       rgb = sphview(x, track$particles$species, screen=FALSE, rotation=rot, center=cm, width=width, ...)$rgb
@@ -263,13 +263,14 @@ modified.surfsmovie = function(halo, select.species = NULL,radius = NULL, aspect
     # make frame
 
 
-    # add text to frame
+    # add text to frame,
+    # TEXT COLOUR ISNT CHANGING WHEN CREATING THE MOVIE, BUT THERE IS TEXT??????
     if (show.time) {
       diagonal = sqrt(prod(dim(rgb)[1:2]))
       s = 0.03*diagonal*text.size
       rgb = magick::image_read(rgb)
       rgb = magick::image_annotate(rgb, sprintf('Lookback time = %.2f Gyr',t.plot[frame]),
-                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(s)), color = text.colour, font='sans', degrees=90)
+                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(s)), color = 'white', font='sans', degrees=90)
       rgb = as.numeric(rgb[[1]])[,,1:3]
     }
 

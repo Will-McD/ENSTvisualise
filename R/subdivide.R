@@ -32,7 +32,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   #' A boolean value determining if numerical noise should be calculated in
   #'determining the curl of the velocity field.
   #'It is naturally set to True.
-  #'Set to False to reduce computational time when generating movies.
+  #'Set to False to reduce computational time when generating movies
   #'
   #' @param flag
   #' A boolean value determining if the flagged cells should be tracked, if True
@@ -40,7 +40,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   #'Naturally set to False as it slows down computational time.
   #'
   #'@param Grid.L
-  #' A value to define the length of one side of the total grid used.
+  #' A value to define the length of one side of the total grid or mesh.
   #'
   #'
   #'@export
@@ -51,7 +51,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   # sort each particle from the IDs given into a cell box within the 3x3x3 grid based on the particles x, y and z coordinates
   #stored in data.table for convienence, data.table is very easy to manipulate
 
-  index2.0 = data.table(
+  index2.0 = data.table::data.table(
     x.i=ceiling((ID.table$RX[id]-(center[1] - 1.5*ds ) ) / ds),
     y.i=ceiling((ID.table$RY[id]-(center[2] - 1.5*ds ) ) / ds),
     z.i=ceiling((ID.table$RZ[id]-(center[3] - 1.5*ds ) ) / ds),
@@ -84,7 +84,6 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
     s.k = ceiling((center[3]+Grid.L/2)/s.ds) # identify where to save the enstrophy value in the data storage list
     if(n==1){
       Storage[[1]] <<- hold$enst
-
       if(noise){Errors[[1]] <<- hold$error}
     }else{
       Storage[[n]][s.i,s.j,s.k] <<- hold$enst
@@ -108,7 +107,7 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
         }
 
         # move center of grid, subdivide one layer further
-        # recursivly call the subdivide function.
+        # recursively call the subdivide function.
         ntot = subdivide(n=n+1, center=center+c(i-2,j-2,k-2)*ds, id=c(index2.0[, id, by=vel.index][which(vel.index==l)]$id), ntot, noise, Grid.L = Grid.L)
 
       }

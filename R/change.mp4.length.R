@@ -3,7 +3,7 @@ change.mp4.length = function(time.mult , input, output, overwrite=F){
 
 
   #'
-  #'Change the length of a .mp4 file
+  #'Change the length of an .mp4 file
   #'
   #'@description
   #'Creates a and saves a copy of a .mp4 file with a different length to that of the original.

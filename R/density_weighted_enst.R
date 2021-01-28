@@ -1,8 +1,8 @@
 
-pop.weighted.enst = function(data, layer){
+density_weighted_enst = function(data, layer){
 
   #'
-  #' Enstrophy in a 2D array, weighted by density
+  #'Collapse a 3D array into a 2D array and weight by particle density.
   #'
   #'@description Return a 'n by n'  2D array from the parsed 'n by n by n' 3D structure.
   #' The data is collapsed along the Z axis and weighted by the population along each column of cells on the Z axis in the 3D array
@@ -18,5 +18,7 @@ pop.weighted.enst = function(data, layer){
 
   array2d = apply(data[[layer]]*Population[[layer]],c(1,2),sum)/apply(Population[[layer]],c(1,2),sum)
   array2d[is.na(array2d)] = 0
+
   return(array2d)
+
 }

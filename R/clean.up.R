@@ -3,12 +3,15 @@
 clean.up = function(files){
 
   #'
-  #'Remove the files from the working directory
+  #'Remove files from the working directory.
+  #'
+  #'Ideally used to remove many files at once or following creating a
+  #'side.by.side movie and then deleting the two parent movies.
   #'
   #'@description remove the files from the working directory given as an input
   #'
   #'@param files
-  #'List of files to remove from the working directory
+  #A vector of file names to remove from the working directory
   #'
   #'@examples clean.up(c('test_movie.mp4', 'frame_00006.png', 'how_to.pdf'))
   #'

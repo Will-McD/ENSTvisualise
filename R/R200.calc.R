@@ -9,9 +9,9 @@ R200.calc = function(species = halo$particles$species, mass.frac = c(1.17e8, 6.2
   #' in SURFS simulation units of Mpc/h
   #'
   #'@param species
-  #'A list containing that each particle in the halo's species (a numeric value)
+  #'A list or vector type object containing numeric values for each particle
+  #'in the halo's species
   #'
-  #'Naturally set to read from a global list called halo.
   #'
   #'@param mass.frac
   #' A vector containing the mass fraction of the individual species of

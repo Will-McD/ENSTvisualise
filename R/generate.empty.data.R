@@ -8,6 +8,8 @@ generate.empty.data = function(max.cells = 3^Global.nmax){
   #'Each entry 'n' corresponds to a layer of the adaptive grid, where the level
   #' of refinement increases with n by a factor of 3.
   #'
+  #' The initial layer is a buffer layer as its just a box with sidelength 3*viral radius
+  #'
   #'@param max.cells
   #'The maximum number of cells for one grid length, the largest array in
   #'the list is defined as max.cells^3

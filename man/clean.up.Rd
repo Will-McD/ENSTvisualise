@@ -2,15 +2,19 @@
 % Please edit documentation in R/clean.up.R
 \name{clean.up}
 \alias{clean.up}
-\title{Remove the files from the working directory}
+\title{Remove files from the working directory.}
 \usage{
 clean.up(files)
 }
 \arguments{
-\item{files}{List of files to remove from the working directory}
+\item{files}{}
 }
 \description{
 remove the files from the working directory given as an input
+}
+\details{
+Ideally used to remove many files at once or following creating a
+side.by.side movie and then deleting the two parent movies.
 }
 \examples{
 clean.up(c('test_movie.mp4', 'frame_00006.png', 'how_to.pdf'))
