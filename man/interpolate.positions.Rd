@@ -2,9 +2,9 @@
 % Please edit documentation in R/interpolate.positions.R
 \name{interpolate.positions}
 \alias{interpolate.positions}
-\title{Interpolate and extrapolate the position of particles}
+\title{Interpolate and extrapolate the position of particles.}
 \usage{
-interpolate.positions(track, snapshots, t, dt)
+interpolate.positions(track, snapshots, t)
 }
 \arguments{
 \item{track}{A list containing a read in halo from Surfsuite.}
@@ -12,14 +12,13 @@ interpolate.positions(track, snapshots, t, dt)
 \item{snapshots}{A data.frame object containing particle id's, velocities and positions
 at given redshifts and look-back times based on the track list.}
 
-\item{t}{A value for the look-back time (Gyrs) for the step to be
-interpolated or extrapolated too}
-
-\item{dt}{A value of the time step interval between look-back times}
+\item{t}{A value for the look-back time \link{Gyrs} for the step to be
+interpolated or extrapolated to.}
 }
 \description{
-Deterimes from the given look-back time and time-steps if a set of particles
+Determines from the given look-back time and time-steps of a set of particles
 positions needs to be extrapolated or interpolated.
+
 If a particles position needs to be interpolated, the particles positions
 will be estimated using a cubic fitted between the two given snapshots to
 fit a position within the given time step.

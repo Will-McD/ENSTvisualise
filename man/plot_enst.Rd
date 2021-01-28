@@ -5,9 +5,11 @@
 \title{Plot the enstrophy from the refined grid algorithm}
 \usage{
 plot_enst(
-  max.layer,
+  max.layer = Global.nmax,
   smoothing = 1/3,
-  gamma = 0.01,
+  alpha = 500,
+  beta = 1.5,
+  gamma = 0.175,
   scale = NULL,
   final = F,
   col.palette = NULL,
@@ -23,9 +25,23 @@ values. Naturally a value of 1/3 is assigned.
 The smoothing values scale with the size of the grid selected to account for
 the expansion of each grid.}
 
-\item{gamma}{alters the prominence of the fine structure in the image, where
-gamma is a constant to scale the values of the matrix 'X' in accordance with
-log(X/max(X) + gamma)}
+\item{alpha}{A numerical value which is a scale factor in the brightness scale; given as
+
+img = log10( alpha x img + beta ) x gamma
+
+alpha gives the floor or base order of magnitude allowed.}
+
+\item{beta}{A numerical value which is a constant to add in the brightness scale; given as
+
+img = log10( alpha x img + beta ) x gamma
+
+assigns an extra value to the floor given}
+
+\item{gamma}{A numerical value which is a scale factor in the brightness scale; given as
+
+img = log10( alpha x img + beta ) x gamma
+
+The total scale factor for the brightness scale}
 
 \item{scale}{A boolean value. Determining if the frame of the image should be scaled.
 If TRUE the image plotted or shown is scaled in from the matrix of enstrophy,
@@ -42,19 +58,20 @@ If NULL then cubehelix(1e3) is used.}
 Naturally set to black.}
 }
 \description{
-Return an image which combines each of the layers from
-the refined grid used to calculate enstrophy.
-Each layer of the enstrophy is collapsed from a 3D array into a 2D array
-using the pop.weighted.enst function, before then being expanded to the
-same size 2D array as that of the max.layer selected.
+Return an image which compiles each of the layers from
+the refined adaptive mesh.
+Each layer of the mesh is collapsed from a 3D array into a 2D array and
+weighted by density, before then being expanded to the same size 2D array as
+that of the layer above it in the adaptive mesh.
 
 As each layer is a factor of 3 greater than the previous
 ie) 3x3x3 -> 9x9x9 -> 27x27x27 .... each layer is expanded by this logic.
 
-The 2D layers are then summed together and smoothed in accordance with the
-smoothing values selected using a Gaussian filter/brush of the gblur function.
+The 2D layers are summed together and smoothed in accordance with the
+smoothing values selected using a Gaussian filter/brush of the gblur f
+unction by the value of the smoothing parameter.
 
 The final 'layered' image from superimposing each smoothed layer is then
-smoothed again by the gamma value before plottinh the matrix in a cube-helix c
-olour mapping as a raster image.
+smoothed again by the gamma value before plotting the matrix with the colour
+palette given in the col.palette parameter.
 }

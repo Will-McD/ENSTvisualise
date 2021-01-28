@@ -27,13 +27,13 @@ Naturally set to 0}
 \item{noise}{A boolean value determining if numerical noise should be calculated in
 determining the curl of the velocity field.
 It is naturally set to True.
-Set to False to reduce computational time when generating movies.}
+Set to False to reduce computational time when generating movies}
 
 \item{flag}{A boolean value determining if the flagged cells should be tracked, if True
 then a data.table is maintained showing all cells that where subdivided.
 Naturally set to False as it slows down computational time.}
 
-\item{Grid.L}{A value to define the length of one side of the total grid used.}
+\item{Grid.L}{A value to define the length of one side of the total grid or mesh.}
 }
 \description{
 From the input particles ID's place the particles into a 3 x 3 x 3 grid with

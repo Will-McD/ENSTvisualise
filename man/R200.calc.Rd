@@ -7,9 +7,8 @@
 R200.calc(species = halo$particles$species, mass.frac = c(1.17e+08, 6.29e+08))
 }
 \arguments{
-\item{species}{A list containing that each particle in the halo's species (a numeric value)
-
-Naturally set to read from a global list called halo.}
+\item{species}{A list or vector type object containing numeric values for each particle
+in the halo's species}
 
 \item{mass.frac}{A vector containing the mass fraction of the individual species of
 particle within the halo in simulation units (solar_mass / h).

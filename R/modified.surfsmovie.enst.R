@@ -1,7 +1,6 @@
 
-modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
+modified.surfsmovie.enst = function(track, mesh.width = GLobal.L,
                                     mp4file, fps = 60,
-                                    Global.nmax = 7,
                                     calc.noise = F,
                                     H0 = 70, OmegaM = 0.3, OmegaL = 0.7,
                                     velocity.conversion = 0.00102269032*(H0/100), # [-] (velocity unit)/(length unit/Gyr) at z=0
@@ -14,10 +13,12 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
                                     specify.frame = NULL,
                                     col = NULL,
                                     show.R200 = F,
+                                    dynam.plot =F,
+                                    bright.scale = c(5e2, 1.5, 0.175),
                                     ...) {
 
 
-  #' Generates a movie from a given halo hdf5 file from surfsuite.
+  #' Generates a movie of density weighted enstrophy.
   #'
   #' @importFrom celestial cosdistTravelTime
   #' @importFrom png writePNG
@@ -30,34 +31,35 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   #'
   #'@description
   #'This is a modified version of the surfsmovie function available in the Simstar package.
+  #'https://github.com/obreschkow/simstar
   #'
   #'creates an .mp4 file from the provided halo list given showing the evolution
-  #'of particles identified to be in the halo at z=0
+  #' of enstrophy within a halo, the enstrophy is dervived from the curl within
+  #' particles identified to be within the halo at redshift z=0.
+  #'
+  #'The aspect ratio of the mp4 file movie is based on the adaptive mesh which
+  #'is square, therefore the mp4 file has an aspect ratio of 1
   #'
   #'
-  #'@param halo
-  #'A list containing the halo information from a given hdf5 file from surfsuite
+  #'
+  #'
+  #'@param track
+  #'A list containing the halo information from a given hdf5 file from surfsuite,
+  #'essentially the halo's hdf5 file read in with read.halo
   #'
   #'@param mesh.width
   #'A value of the width of the adaptive mesh used to calculate
   #'enstrophy.Naturally set to the Global.L value.
   #'
   #'
-  #'@param aspect
-  #'An optional value for the aspect ratio of the .mp4 file produced, naturally aspect ratio is 1 (a square).
-  #'
   #'@param mp4file
   #'The file name of the .mp4 file which will be produced.
+  #'
+  #'include the .mp4 suffix.
   #'
   #'@param fps
   #'An optional value for the frames per second of the movie produced, naturally
   #'the fps is 60
-  #'
-  #'@param Global.nmax
-  #'The maximum level of the grid and number of entries in the list.
-  #'It is naturally set to 7 as lower values reduce the resolution and values
-  #'above 8 are not worth the increased computational time for the improved resolution.
-  #'i.e) if n.max = 4, the most refined grid will be (3^4 = 81) an 81x81x81 array.
   #'
   #'@param calc.noise
   #' A boolean value determining if numerical noise should be calculated in
@@ -94,8 +96,9 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   #'
   #'@param scale
   #'A boolean value, which determines if the frames shown in the movie
-  #'are co-moving or physical. If scale is True then the frames shows an image of
-  #'radius / scalefactor else if False then the frames show an image of radius.
+  #'are co-moving or physical. If scale is FALSE then the frames shows an image of
+  #'radius / scalefactor else if TRUE then the frames show an image of radius R200
+  #' at redshift = 0
   #'Naturally it is False.
   #'
   #'@param dt
@@ -121,21 +124,50 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   #'@param show.R200
   #'A Boolean value which if true will overlay a ring showing R200 at Z=0
   #'
-  #'!!! A WORK IN PROGESS !!!
+  #'    !!!! A WORK IN PROGESS !!!!
   #'This parameter is not 100% finished and not working in at a suitable level yet!
+  #'
+  #'@param dynam.plot
+  #'A boolean value to determine if the plots size and smoothing should be
+  #'adjusted for the levels of the adaptive mesh occupied.
+  #'Naturally set to False
+  #'
+  #'If True it is enabled;
+  #'Reduces computational time but reduces the quality of the image.
+  #'The resolution and smoothness of the images produced are of lowered as the
+  #'layers of the mesh when compiled will only expand
+  #'to fit the highest occupied layer and smooth the img at that level.
+  #'
+  #'If False it is disabled; When compiling the layers of the mesh they will all
+  #' be expanded to the Global.nmax and smoothed at that level.
+  #'
+  #'    !!!!NOT FULLY TESTED YET !!!!!
+  #'It is in a stage of working, however has not be tested as extensively.
+  #'
+  #'
+  #'@param bright.scale
+  #'
+  #'a vector containing 3 numeric values, that alter the brightness scale used in creating the png images
+  #'bright.scale = c(alpha, beta, gamma)
+  #'
+  #'where the brightness scale is given as
+  #'img = log10(alpha x img + beta) x gamma
+  #'
   #'
   #'@examples
   #'
-  #'halo = read.halo(hdf5.file = '/Users/..../test_halo.h5')
-  #'modified.surfsmovie.enst(halo, mp4file = 'test_surfs_movie.mp4', radius = R200.calc(), scale = T)
+  #'halo = read.halo(hdf5.file = '/Users/..../test_halo')
+  #'modified.surfsmovie.enst(halo, mp4file = 'test_surfs_movie.mp4', mesh.width = 3*R200.calc())
+  #'
+  #'
+  #'A movie where if in full it would be 10s at 60 fps, therefore 600 frames.
+  #'However to have the movie only be on the final second of this whole movie:
+  #'modified.surfsmovie.enst(halo, mp4file = 'test_surfs_movie.mp4', specify.frame = seq(499, 600))
   #'
   #'@export
   #'
 
 
-
-  # load track
-  track = halo
 
   # make snapshot dataframe
   snapshot_min = track$tracking$snapshot_min
@@ -181,15 +213,6 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   call = sprintf('rm -rf %s; mkdir %s',dir,dir)
   system(call)
 
-  ## determine scale
-  #if (is.null(radius)) {
-  #  str = snstr(snapshot_max)
-  #  x = cbind(track$particles[[str]]$rx,track$particles[[str]]$ry,track$particles[[str]]$rz)
-  #  x0 = apply(x,2,mean) # geometric centre
-  #  radius = sqrt(max(apply(t(t(x)-x0)^2,1,sum)))
-  #}
-  #width = 2*radius*sqrt(aspect)
-
 
   # determine scale & rotation
   if (length(rotation)==3) {
@@ -224,8 +247,6 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
   lbt.range = range(t.plot)
   cat(sprintf('interpolated look-back time range: (%f, %f) [Gyrs]\n', lbt.range[2], lbt.range[1]))
 
-  Shell <<- generate.empty.data()
-
   # produce frames
   if(!is.null(specify.frame)){loop = specify.frame}else{loop = seq_along(t.plot)}
   for (frame in loop){
@@ -244,33 +265,45 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
     x = hold[[1]]
     v = hold[[2]]
 
-    np = track$halo$n_particles
-    ID.table <<- generate.particle.id.table.4(x,v, species=1)
+    #np = track$halo$n_particles
+    ID.table <<- generate.particle.id.table.4(x,v, select.species=1, species = track$particle$species, p.mass=f)
 
     #divide populations for images and  set up data structures for calculating enstrophy
-    Population <<- Shell
-    Storage <<- Shell
-    population.levels()
+    if(!calc.noise){Population <<- Storage <<- generate.empty.data()}else{Population <<- Storage <<-Errors <<- generate.empty.data()}
+
+    #population.levels()  #DOUBLE CHECK OVER THIS POINT AND SEE IF THERE IS A DIFFERENCE
+    population.levels(Grid.L=Grid.L)
     Population[[1]] = length(ID.table$RX)
+
+    #sanity check
+    if(sum(Population[[2]]) != sum(Population[[3]] )){stop("LOST PARTICLES BETWEEN MESH LAYERS WHEN CALCULATING DENSITY")}
+
 
     #calculate enstrophy
     ntot = subdivide(noise=calc.noise, Grid.L = Grid.L)
 
 
-    # remove all NA values saved if they exist.
+    # remove all NA values saved if they exist, A SAFTEY NET
     for(i in 1:Global.nmax){
       Storage[[i]][which(is.na(Storage[[i]]))] = 0
       if(calc.noise){Errors[[i]][which(is.na(Errors[[i]]))] = 0}
     }
 
-    l=0
-    for(n in  1:Global.nmax){
-      if(sum(Storage[[n]] > 0) > 0){l=n}
-    }
+
     cat(sprintf('frame_%d subdivision routine complete; numb points of enstrophy saved: %d \n', frame, ntot))
-    if(l == Global.nmax){print('n >= max');l=Global.nmax}else{l=l+1}
+    #if(l == Global.nmax){print('n >= max');l=Global.nmax}else{l=l+1}
 
+    max.occupied= function(){
+      for(n in Global.nmax:1){
+        if(any(Storage[[n]] >0)){return(n)}
+      }
+    }
 
+    l = Global.nmax
+    if(dynam.plot){
+      l = max.occupied()
+      if(l < Global.nmax){l %+=% 1}
+      }
 
     # save frame
     cat(sprintf('Generating enstrophy image for frame_%0.6d\n',frame))
@@ -282,7 +315,9 @@ modified.surfsmovie.enst = function(halo, mesh.width = GLobal.L, aspect = 1,
     if(t.plot[frame] == t.plot[length(t.plot)]){f.255 = T}else{f.255 = F}
     if(scale){s = sf[frame]}else{s = NULL}
 
-    plot_enst(max.layer=7,smoothing=1/3,gamma=0.01, scale = s, final=f.255,  col.palette = col) # create raster image of the layered enstrophy
+
+    #plot_enst(max.layer=7,smoothing=1/3,gamma=0.01, scale = s, final=f.255,  col.palette = col) # create raster image of the layered enstrophy
+    plot_enst(max.layer=l,smoothing=1/3, scale = s, final=f.255,  col.palette = col, alpha =  bright.scale[1], beta = bright.scale[2], gamma=bright.scale[3]) # create raster image of the layered enstrophy
 
 
     grDevices::dev.off() # Close the pdf file

@@ -7,7 +7,7 @@
 clear.dev.list()
 }
 \description{
-Calls dev.off() x many times, x being the number of items in dev.list()
+Calls dev.off() 'x' many times. 'x' being the number of items in dev.list()
 
 Used to clear out all plots stored in XQuartz
 }

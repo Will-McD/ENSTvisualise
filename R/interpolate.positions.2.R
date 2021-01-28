@@ -5,15 +5,12 @@ interpolate.positions.2 = function(track, snapshots, t) {
   #'Interpolate and extrapolate the position of particles
   #'
   #'@description
-  #'Determines from the given look-back time and time-steps if a set of particles
+  #'Determines from the given look-back time and time-steps of a set of particles
   #' positions needs to be extrapolated or interpolated.
   #'If a particles position needs to be interpolated, the particles positions
   #'will be estimated using a cubic fitted between the two given snapshots to
   #'fit a position within the given time step.
   #'
-  #'Essentially makes the movies smoother in appearance by increasing the
-  #'number of possible frames and therefore the resultant fps without
-  #'sacrificing movie length as it adds extra frames between frames.
   #'
   #'@param track
   #' A list containing a read in halo from Surfsuite.
@@ -25,9 +22,6 @@ interpolate.positions.2 = function(track, snapshots, t) {
   #'@param t
   #' A value for the look-back time (Gyrs) for the step to be
   #' interpolated or extrapolated too
-  #'
-  #'@param dt
-  #' A value of the time step interval between look-back times
   #'
   #' @export
   #'

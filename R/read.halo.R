@@ -1,5 +1,5 @@
 
-read.halo = function(path='/Users/will_mcd/Documents/project/the halos/', halo.file='halo1track.hdf', hdf5.file = NULL){
+read.halo = function(path, halo.file, hdf5.file = NULL){
 
   #'Read in the halo hdf5 file
   #'
@@ -9,10 +9,10 @@ read.halo = function(path='/Users/will_mcd/Documents/project/the halos/', halo.f
   #'the given location (path) and return all the data contained in the file as
   #'a list type object.
   #'This function has two methods of reading in the file, either through entering
-  #'the hdf5 files location or by entering in the path for where the file is
-  #'stored and the name of the file separately.
+  #'the hdf5 files location (hdf5.file) or by entering in the path for the directory of
+  #'where the file is stored (path) and the name of the file (halo.file) separately.
   #'
-  #'The list should contain each particles location in cartesian coordinates,
+  #'The returned list should contain each particles location in cartesian coordinates,
   #'velocities, mass and the species ID within the halo at a given snapshot.
   #'Each of these values will be in the simulations units of measurement.
   #'

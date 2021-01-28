@@ -7,21 +7,24 @@ compute_enst = function(X, Y, Z, ds, noise=T, normalise = NULL){
   #'
   #'
   #'
-  #'@description Calculates the normal curl from the given grid about the center of the grid,
-  #'the curl is calculated through numerical approximations of partial derivatives
-  #'across the grid cells.
+  #'@description Calculates the normal curl from the given 3x3x3 grid about the
+  #'center of the grid,the curl is calculated through numerical approximations
+  #'of partial derivatives across the grid boxes adjacent to the central box.
   #'
-  #'Using the cross configuration, ie) ignoring the corner boxes of the array,
-  #'the central 3D cross (boxes with face to face contact with the central box),
-  #'can be used to calculate the curl around the central box within the 3x3x3 array of velocities.
-  #'Therefore 9 partial derivatives will be numerically approximated from the 3x3x3 array.
+  #'Using the cross configuration, the central cross (the boxes in face to face
+  #'contact with the central box [ignoring the corner boxes of the 3D array]),
+  #'can be used to calculate the curl around the central box within the 3x3x3
+  #'array of velocities.
+  #'Therefore 9 partial derivatives will be numerically approximated from the
+  #'3x3x3 array, as shown in the equation below:
   #'
-  #'The curl formula is: curl of f(x,y,z) = ( (dz/dy - dy/dz)i , (dx/dz - dz/dx)j , (dy/dx - dx/dy)k )
+  #'Curl of f(x,y,z) = ( (dz/dy - dy/dz)i , (dx/dz - dz/dx)j , (dy/dx - dx/dy)k )
   #'
-  #'Calculated using simulaiton length units [Mpc /h] and velocity units of [(simulaiton length units)/Gyrs],
-  #' as the interpolated velocity positions are returned in Gyrs, therefore enstrophy is given in Gyrs^-2.
-  #'This allows for less conversion of units, a more natural normalisation of enstrophy & conforms with convention
-  #' of natural units as galaxy clusters use Gyrs as a natural unit of time.
+  #'The curl is calculated using simulaiton length units [Mpc /h] and velocity
+  #'units [Mpc/h /Gyrs] from SURFS, therefore, enstrophy is given in Gyrs^-2.
+  #'
+  #'If normalised the value returned is unitless, given the normalization value
+  #'is in Gyrs^2
   #'
   #'@param X,Y,Z
   #'A 3 x 3 x 3 array with each cell containing the mean velocity of the

@@ -1,5 +1,5 @@
 
-population.levels=function(n.max = Global.nmax){
+population.levels=function(n.max = Global.nmax, Grid.L = Global.L){
   #'
   #'Arrays of particle populations in cluster
   #'
@@ -14,10 +14,12 @@ population.levels=function(n.max = Global.nmax){
   #'@param n.max
   #'an optional value, the maximum level of the grid and number of entries in the list.
   #'It is naturlly set to the Global.nmax (A global constant value), which is
-  #'characteristically set to 7.
-  #'i.e) if n.max = 4, the most refined grid will be (3^4 = 81) an 81x81x81 array.
+  #'characteristically set to 6 or 7.
+  #'i.e) if n.max = 5, the most refined grid will be (3^5-1 = 81) an 81x81x81 array.
   #'
-  #'@examples population.levels()
+  #'@param Grid.L
+  #'The width or length of the grid
+  #'
   #'
   #'
   #'@export
@@ -26,14 +28,14 @@ population.levels=function(n.max = Global.nmax){
 
   for(n in 2:n.max){
     l=3^(n-1)
-    n.ds = Global.L/l
-    box.n = array(0, dim = c(l, l, l))
+    n.ds = Grid.L/l
 
     t = length(ID.table$RX)
+
     for(i in 1:t){
-      x.i = ceiling((ID.table$RX[[i]] + Global.L/2 )/ (n.ds) )
-      y.i = ceiling((ID.table$RY[[i]] + Global.L/2 )/ (n.ds) )
-      z.i = ceiling((ID.table$RZ[[i]] + Global.L/2 )/ (n.ds) )
+      x.i = ceiling((ID.table$RX[[i]] + Grid.L/2 )/ (n.ds) )
+      y.i = ceiling((ID.table$RY[[i]] + Grid.L/2 )/ (n.ds) )
+      z.i = ceiling((ID.table$RZ[[i]] + Grid.L/2 )/ (n.ds) )
 
       if (x.i>=1 & x.i<=l & y.i>=1 & y.i<=l & z.i>=1 & z.i<=l) {
 
@@ -42,3 +44,6 @@ population.levels=function(n.max = Global.nmax){
     }
   }
 }
+
+
+
