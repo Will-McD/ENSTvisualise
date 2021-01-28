@@ -1,12 +1,12 @@
 
 
 enst_graph = function(halo.vec, 
-                            halo.directory, 
-                            return.data = F,
-                            graph.directory = NULL,
-                            g.ind = 3,
-                            n.max = 6,
-                            snapshot.nums = seq(70,199)
+                      halo.directory, 
+                      return.data = F,
+                      graph.directory = NULL,
+                      g.ind = 3,
+                      n.max = 6,
+                      snapshot.nums = seq(70,199)
                             ){
   #'
   #'Produces graphs or returns the data.table of data from a hdf5 file 
@@ -91,9 +91,9 @@ enst_graph = function(halo.vec,
     halo <<- read.halo(path =sprintf("%s/",halo.directory), halo.file = name )
     
     #set up all global parameters and make sure they are clear for the next run through
-    ID.table = NA
-    Storage = NA
-    Population = NA
+    #ID.table = NA
+    #Storage = NA
+    #Population = NA
     
     Global.L <<- 3 * R200.calc()
     Global.nmax <<- n.max
@@ -106,75 +106,79 @@ enst_graph = function(halo.vec,
     #create empty data.tables to fill
     x2 = y2 = data.table::data.table()
     
+    add.data= function(x, y, g.ind){
+      noise = c(NA)
+      enst = c(NA)
+      cat(sprintf("weighting by density \n"))
+      #plot.data = c('id','bi' ,'np', 1, 2, 3, 4, 5, 6, 7)
+      
+      print(Storage[[2]])
+      
+      for(j in seq(2, Global.nmax)){
+        
+        print(j)
+        Storage[[j]]
+        
+        enst[j] = mean(density_weighted_enst(Storage, j)[density_weighted_enst(Storage, j)>0])
+        noise[j] = mean(density_weighted_enst(Errors, j)[density_weighted_enst(Storage, j)>0])
+        
+      }
+      
+      enst[is.nan(enst)] = NA
+      enst[enst = 0] = NA
+      
+      noise[is.nan(noise)] = NA
+      noise[noise = 0] = NA
+      
+      x = rbind(x,rbind(c(halo$halo$id, NA, halo$halo$n_particles, enst)))
+      
+      if(g.ind!=1){ y = rbind(y,rbind(c(halo$halo$id, NA, halo$halo$n_particles, noise)))}
+      
+      return(list('enst' = x, 'noise'=y))
+      
+    }
+    
     #iterate over all snapshots 
     for(i in snapshot.nums){
-      cat(sprintf("SNAPSHOT %d / $d \n", i-snapshot.nums[1]-1), diff(range(snapshot.nums)))
+      cat(sprintf("SNAPSHOT %d / %d \n", (i + 1 -snapshot.nums[1]), diff(range(snapshot.nums))))
       
       Grid.L = Global.L / halo$particles[[snstr(i)]]$scalefactor
 
-      generate.data = function(Grid.L, g.ind, halo.name = NULL, n.max = 7, snapshot=199){
-        
-        frame = halo$particles[[snstr(snapshot)]]
-        
-        #unwrap the halo
-        for(i in 1:3){
-          if((max(frame[[i]]) - min(frame[[i]])) > 105){
-            
-            half.range = rep(105, length(frame[[i]]))
-            frame[[i]] = mod(frame[[i]] + half.range, 210)
-            
-          }
-        }
-        
-        
-        ID.table <<- generate.particle.id.table.4(x=cbind(frame$rx,frame$ry,frame$rz),
-                                                  v=cbind(frame$vx,frame$vy,frame$vz),
-                                                  select.species=1, 
-                                                  species = halo$particles$species
-        )
-        
-        #divide populations for images and  set up data structures for calculating enstrophy
-        cat(sprintf('Generating empty data structures and calculating density.\n'))
-        Population <<- Storage <<- Errors <<- generate.empty.data()
-        
-        population.levels(Grid.L = Grid.L)
-        Population[[1]] = sum(halo$particles$species==1)
-        
-        
-        cat(sprintf('Applying adaptive mesh for enstrophy and error. \n'))
-        n = TRUE
-        if(g.ind !=1){n = FALSE}
-        ntot = subdivide(Grid.L = Grid.L, noise = n)
-        
-        
-      }
-      generate.data(Grid.L, g.ind, halo.name = name, snapshot = i, n.max = Global.nmaxs)
+      snapshot = i
       
-      add.data= function(x, y, g.ind){
-        noise = c(NA)
-        enst = c(NA)
-        cat(sprintf("weighting by density \n"))
-        #plot.data = c('id','bi' ,'np', 1, 2, 3, 4, 5, 6, 7)
-        for(j in seq(2, Global.nmax)){
+      frame = halo$particles[[snstr(snapshot)]]
+      
+      #unwrap the halo
+      for(i in 1:3){
+        if((max(frame[[i]]) - min(frame[[i]])) > 105){
           
-          enst[j] = mean(density_weighted_enst(Storage, j)[density_weighted_enst(Storage, j)>0])
-          noise[j] = mean(density_weighted_enst(Errors, j)[density_weighted_enst(Storage, j)>0])
+          half.range = rep(105, length(frame[[i]]))
+          frame[[i]] = mod(frame[[i]] + half.range, 210)
           
         }
-        
-        enst[is.nan(enst)] = NA
-        enst[enst = 0] = NA
-        
-        noise[is.nan(noise)] = NA
-        noise[noise = 0] = NA
-        
-        x = rbind(x,rbind(c(halo$halo$id, NA, halo$halo$n_particles, enst)))
-        
-        if(g.ind!=1){ y = rbind(y,rbind(c(halo$halo$id, NA, halo$halo$n_particles, noise)))}
-        
-        return(list('enst' = x, 'noise'=y))
-        
       }
+      
+      
+      ID.table <<- generate.particle.id.table.4(x=cbind(frame$rx,frame$ry,frame$rz),
+                                                v=cbind(frame$vx,frame$vy,frame$vz),
+                                                select.species=1, 
+                                                species = halo$particles$species
+      )
+      
+      #divide populations for images and  set up data structures for calculating enstrophy
+      cat(sprintf('Generating empty data structures and calculating density.\n'))
+      Population <<- Storage <<- Errors <<- generate.empty.data()
+      
+      population.levels(Grid.L = Grid.L)
+      Population[[1]] = sum(halo$particles$species==1)
+      
+      
+      cat(sprintf('Applying adaptive mesh for enstrophy and error. \n'))
+      n = TRUE
+      if(g.ind !=1){n = FALSE}
+      ntot = subdivide(Grid.L = Grid.L, noise = n)
+      
+      
       hold = add.data(x2, y2, g.ind)
       x2 = hold[[1]]
       y2 = hold[[2]]
