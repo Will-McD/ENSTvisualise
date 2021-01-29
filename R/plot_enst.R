@@ -106,32 +106,26 @@ plot_enst = function(max.layer=Global.nmax,
   if(is.null(col.palette)){col = cubehelix(1e3)}else{col = col.palette} # define the colour palette to use
 
 
+  #have the background be black
   par(bg=bg.col)
 
   if(is.null(scale)){s = 1}else{s=scale}
 
-
-  cooltools::nplot(xlim=c(-dim(array2d)[1] * s, dim(array2d)[1] * s), ylim=c(-dim(array2d)[1] * s,dim(array2d)[1] * s),cex=0.25, pty='s') # empty plot as template for the raster image
+  #create empty plot to put raster image in and allow all sides to be scaled if needed.
+  cooltools::nplot(xlim=c(-dim(array2d)[1] * s, dim(array2d)[1] * s)/2, ylim=c(-dim(array2d)[1] * s,dim(array2d)[1] * s)/2,cex=0.25, pty='s') # empty plot as template for the raster image
 
   img = apply(img,c(1,2),sum) # collapse the array of image matrices as required.
-  if(final){img = img/10}
 
+
+  if(final){img = img/10}
   floor = 1e-8
   roof = 3e4
-
-
   img = lim(img, min=floor, max=roof)
 
-
-  #img = log10(5e2*img + 1.5) * 0.175
   img = log10(alpha*img + beta) * gamma
-
-
-  colvals = pmin(1e3,pmax(1,ceiling(img*1e3)))
 
   img = array(col[pmin(1e3,pmax(1,ceiling(img*1e3)))],dim(img)) # convert values to colour id from colour pallete
 
-  return(rasterImage(rasterflip(img),-dim(array2d)[1],-dim(array2d)[1],dim(array2d)[1],dim(array2d)[1])) # plot as raster image.
-
+  return(rasterImage(cooltools::rasterflip(img),-dim(array2d)[1]/2,-dim(array2d)[1]/2,dim(array2d)[1]/2,dim(array2d)[1]/2)) # plot as raster image.
 
 }

@@ -131,28 +131,8 @@ modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspec
   #create a duplicate list of the halo which will be modified depending on the species
   #track = halo
 
-  species.all = track$particles$species
+  #species.all = track$particles$species
 
-  if(!is.null(select.species)){
-
-    allow = which(track$particles$species == select.species)
-
-    track$particles$id = track$particles$id[allow]
-    track$particles$species = tracl$particles$species[allow]
-
-    for(snap in 2:131){
-
-      track$particles[[snap]]$rx = track$particles[[snap]]$rx[allow]
-      track$particles[[snap]]$ry = track$particles[[snap]]$ry[allow]
-      track$particles[[snap]]$rz = track$particles[[snap]]$rz[allow]
-
-      track$particles[[snap]]$vx = track$particles[[snap]]$vx[allow]
-      track$particles[[snap]]$vy = track$particles[[snap]]$vy[allow]
-      track$particles[[snap]]$vz = track$particles[[snap]]$vz[allow]
-
-    }
-
-  }
 
   # make snapshot dataframe
   snapshot_min = track$tracking$snapshot_min
@@ -213,10 +193,14 @@ modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspec
 
 
   t.plot = rev(seq(min(snapshots$t),max(snapshots$t),dt))
-  #print(t.plot)
+
   cosmo = cooltools::cosmofct(0, 10, H0 = 70, OmegaM = 0.3, OmegaL = 0.7)
   sf = 1 / ( cosmo$t2z(t.plot) + 1 )
-  #print(sf)
+
+
+
+  # make Center of Mass the center of the image
+  m = (f/sum(f))[track$particles$species] #leaving in simulation units, all particle species are needed for this
 
   # produce frames
   if(!is.null(specify.frame)){loop = specify.frame}else{loop = seq_along(t.plot)}
@@ -229,7 +213,8 @@ modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspec
 
     # make Center of Mass the center of the image
     #m = (f/sum(f))[halo$particle$species] #* 7.47e8 * 1.9889200011446e30 / 0.7, #leaving in simulation units, using halo as all particle species are needed for this
-    m = (f/sum(f))[species.all]  #leaving in simulation units, all particle species are needed for this
+
+
 
 
     # interpolate positions
@@ -239,8 +224,23 @@ modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspec
       # make Center of Mass the center of the image
       #m = (f/sum(f))[halo$particle$species] #leaving in simulation units, using halo as all particle species are needed for this
 
+      #stop(m)
+
       x = interpolate.positions(track, snapshots, t.plot[frame])
       cm = c(sum(x[,1]*m),sum(x[,2]*m),sum(x[,3]*m))/sum(m) #using halo as all particle species are needed for this
+
+
+
+      if(!is.null(select.species)){
+
+        allow = which(track$particles$species == select.species)
+        track$particles$id = track$particles$id[allow]
+        track$particles$species = track$particles$species[allow]
+
+        x = x[allow, ]
+
+      }
+
 
       if(is.null(png.size)){
         rgb = sphview(x, track$particles$species, screen=FALSE, rotation=rot, weight = NULL, center=cm, width=width/sf[frame], ...)$rgb
@@ -255,29 +255,37 @@ modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspec
       str = snstr(snapshots$index[frame])
       x = interpolate.positions(track, snapshots, t.plot[frame], dt)
       cm = c(sum(x[,1]*m),sum(x[,2]*m),sum(x[,3]*m))/sum(m)
+      if(!is.null(select.species)){
+
+        allow = which(track$particles$species == select.species)
+        track$particles$id = track$particles$id[allow]
+        track$particles$species = track$particles$species[allow]
+
+        x = x[allow, ]
+      }
+
 
       rgb = sphview(x, track$particles$species, screen=FALSE, rotation=rot, center=cm, width=width, ...)$rgb
 
-    }
-
-    # make frame
-
-
-    # add text to frame,
-    # TEXT COLOUR ISNT CHANGING WHEN CREATING THE MOVIE, BUT THERE IS TEXT??????
-    if (show.time) {
-      diagonal = sqrt(prod(dim(rgb)[1:2]))
-      s = 0.03*diagonal*text.size
-      rgb = magick::image_read(rgb)
-      rgb = magick::image_annotate(rgb, sprintf('Lookback time = %.2f Gyr',t.plot[frame]),
-                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(s)), color = 'white', font='sans', degrees=90)
-      rgb = as.numeric(rgb[[1]])[,,1:3]
     }
 
 
     # save frame
     fn = sprintf('%sframe_%0.6d.png',dir,frame)
     png::writePNG(cooltools::rasterflip(rgb),fn)
+
+    # add text to frame,
+    if (show.time) {
+      diagonal = sqrt(prod(dim(rgb)[1:2]))
+      s = 0.03*diagonal*text.size
+      #rgb = magick::image_read(rgb)
+      rgb = magick::image_read(fn)
+      rgb = magick::image_annotate(rgb, sprintf('Lookback time = %.2f Gyr',t.plot[frame]),
+                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(300-2*s)), color = 'white', font='sans', degrees=0)
+      rgb = as.numeric(rgb[[1]])[,,1:3]
+      fn = sprintf('%sframe_%0.6d.png',dir,frame)
+      png::writePNG(rgb, sprintf('%sframe_%0.6d.png',dir,frame))
+    }
 
 
     if(show.R200){
@@ -336,3 +344,5 @@ modified.surfsmovie = function(track, select.species = NULL,radius = NULL, aspec
   }
 
 }
+
+

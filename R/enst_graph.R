@@ -2,7 +2,7 @@
 
 enst_graph = function(halo.vec, 
                       halo.directory, 
-                      return.data = F,
+                      return.data = T,
                       graph.directory = NULL,
                       g.ind = 3,
                       n.max = 6,
@@ -73,10 +73,17 @@ enst_graph = function(halo.vec,
   #'halo.vec = c("halo_1", "halo_2", "halo_3")
   #'halo.directory = "/where/halos/are/saved"
   #'graphs.directory = "/where/graphs/will/be/saved"
-  #'enstrophy_graphs(halo.vec, halo.directory, graphs.directory, g.ind = 3)
+  #'enst_graph(halo.vec, halo.directory, graphs.directory, g.ind = 3 ,return.data = F)
   #'
   #'
   #'return a list of two data.tables 
+  #'
+  #'halo.vec = c("halo_1", "halo_2", "halo_3")
+  #'halo.directory = "/where/halos/are/saved"
+  #'graphs.directory = "/where/graphs/will/be/saved"
+  #'enst_graph(halo.vec, halo.directory, graphs.directory, g.ind = 3 ,return.data = T)
+  #'
+  #'
   #'
   #'
   #'@export
@@ -110,14 +117,11 @@ enst_graph = function(halo.vec,
       noise = c(NA)
       enst = c(NA)
       cat(sprintf("weighting by density \n"))
-      #plot.data = c('id','bi' ,'np', 1, 2, 3, 4, 5, 6, 7)
+      #plot.data = c('id','bi' ,'np', 1, 2, 3, 4, 5, 6)
       
-      print(Storage[[2]])
+     
       
       for(j in seq(2, Global.nmax)){
-        
-        print(j)
-        Storage[[j]]
         
         enst[j] = mean(density_weighted_enst(Storage, j)[density_weighted_enst(Storage, j)>0])
         noise[j] = mean(density_weighted_enst(Errors, j)[density_weighted_enst(Storage, j)>0])
@@ -140,9 +144,9 @@ enst_graph = function(halo.vec,
     
     #iterate over all snapshots 
     for(i in snapshot.nums){
-      cat(sprintf("SNAPSHOT %d / %d \n", (i + 1 -snapshot.nums[1]), diff(range(snapshot.nums))))
+      cat(sprintf("SNAPSHOT %d / %d \n", (i + 1 -snapshot.nums[1]), length(snapshot.nums)))
       
-      Grid.L = Global.L / halo$particles[[snstr(i)]]$scalefactor
+      Grid.L = Global.L / as.numeric(halo$particles[[snstr(i)]]$scalefactor)
 
       snapshot = i
       
@@ -175,7 +179,7 @@ enst_graph = function(halo.vec,
       
       cat(sprintf('Applying adaptive mesh for enstrophy and error. \n'))
       n = TRUE
-      if(g.ind !=1){n = FALSE}
+     # if(g.ind ==1){n = FALSE}
       ntot = subdivide(Grid.L = Grid.L, noise = n)
       
       
@@ -184,12 +188,12 @@ enst_graph = function(halo.vec,
       y2 = hold[[2]]
 
     }
-    
+    if(return.data){return(list('Enst' = x2, 'Noise' = y2))}
     ## name data.table columns  
     old = c('V1', 'V2', "V3")
     new = c('id','bi' ,'np')
     for (i in 1:Global.nmax) {
-      vcol = sprintf('V%01d', i)
+      vcol = sprintf('V%01d', i+3)
       nlayer = sprintf('n%01d', i)
       old[i + 3] = vcol
       new[i + 3] = nlayer
@@ -197,28 +201,28 @@ enst_graph = function(halo.vec,
     data.table::setnames(x2, old, new)
     data.table::setnames(y2, old, new)
     
-    if(return.data){return(list('Enst' = x2, 'Noise' = y2))}
+    
     
     #get Look-Back Time
     scalefactor = c()
     for(i in snapshot.nums){
       scalefactor[(i + 1- snapshot.nums[1] )] = halo$particles[[snstr(i)]]$scalefactor
-      print((i-snapshot.nums[1] + 1))
+      #print((i-snapshot.nums[1] + 1))
     }
     lbt = celestial::cosdistTravelTime(z=(1/scalefactor - 1),  H0 = 70, OmegaM = 0.3, OmegaL = 0.7)
 
-    colour = grDevices::rainbow(Global.nmax)
+    colour = c('purple', 'blue', 'lightseagreen', 'green', 'orange', 'red')
     
-    if(g.ind == 1 | g.ind ==3){
+   # if(g.ind == 1 | g.ind ==3){
       
       axis.max = 1e10
       
-      if(Global.nmax==6){max.value = max(x2$n6[which(!is.na(x2$n6))])}
-      if(Global.nmax==7){max.value = max(x2$n7[which(!is.na(x2$n7))])}
-      if(max.value > axis.max){axis.max = max.value}
+      #if(Global.nmax==6){max.value = max(x2$n6[which(!is.na(x2$n6))])}
+     
+      #if(max.value > axis.max){axis.max = max.value}
       
       axis.min = 1e2
-      if(min(x2$n2) < 1e2){axis.min = min(x2$n2)  }
+      #if(min(x2$n2) < 1e2){axis.min = min(x2$n2)}
       
       #open pdf
       if(is.null(graph.directory)){graph.directory = getwd()}
@@ -241,18 +245,11 @@ enst_graph = function(halo.vec,
       # commit plot and close pdf file
       grDevices::dev.off()
       
-    }
+    #}
     
-    if(g.ind ==2 | g.ind ==3){
+    #if(g.ind ==2 | g.ind ==3){
       
       axis.max = 1e10
-      if(Global.nmax==6){max.value = max(x2[,n6])}
-      if(Global.nmax==7){max.value = max(x2[,n7])}
-      if(max.value > axis.max){axis.max = max.value}
-      
-      if(Global.nmax==6){max.value = max(x2$n6[which(!is.na(x2$n6))])}
-      if(Global.nmax==7){max.value = max(x2$n7[which(!is.na(x2$n7))])}
-      if(max.value > axis.max){axis.max = max.value}
       
       axis.min = 1e2
       if(min(x2$n2) < 1e2){axis.min = min(x2$n2)  }
@@ -269,7 +266,7 @@ enst_graph = function(halo.vec,
       for(i in 1:Global.nmax){
         graphics::points(y2[[sprintf('n%d',i)]], x2[[sprintf('n%d',i)]],  pch=20, type = 'p', col=colour[i])
       }
-      
+      print(range(!is.na(y2$n4)))
       graphics::legend('top', col=colour, legend = new[-c(1,2,3)], horiz = T, pch=20, cex=1.2, bg='transparent', bty = 'n')
       
       graphics::abline(coef=c(0,1), lty=2, col='red')
@@ -279,7 +276,7 @@ enst_graph = function(halo.vec,
       grDevices::dev.off()
       
       
-    }
+    #}
     
 
   }

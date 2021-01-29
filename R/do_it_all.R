@@ -122,7 +122,7 @@ do_it_all = function(halo.hdf5.file, movie.name,
   cat(sprintf('CREATING ENST MOVIE \n'))
 
   modified.surfsmovie.enst(halo, mp4file = v1, mesh.width = Global.L,
-                           dt=time.step, fps=FPS,  col = enst.col,
+                           dt=time.step, fps=FPS,  col = enst.col, show.time=F,
                            keep.frames = keep.frames, show.R200=draw.R200,
                            specify.frame = specify.frame.numb, dynam.plot = dynam.plot
                            )

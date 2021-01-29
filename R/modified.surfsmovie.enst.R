@@ -6,6 +6,8 @@ modified.surfsmovie.enst = function(track, mesh.width = GLobal.L,
                                     velocity.conversion = 0.00102269032*(H0/100), # [-] (velocity unit)/(length unit/Gyr) at z=0
                                     keep.frames = TRUE,
                                     rotation = 1,
+                                    show.time = T,
+                                    text.size = 1,
                                     scale = F,
                                     dt = 0.05, # [Gyrs]
                                     f = c(1.17e8, 6.29e8), # (Baryon, Dark Matter) [Solar mass /h]
@@ -93,6 +95,12 @@ modified.surfsmovie.enst = function(track, mesh.width = GLobal.L,
   #' eigenvalues, respectively. If a vector,
   #' its direction specifies the rotation axis and its norm the rotation angle
   #' in radians in the positive geometric sense.
+  #'
+  #'@param show.time
+  #'A boolean specifying whether the look-back time is displayed
+  #'
+  #'@param text.size
+  #'A scaling factor for the text size used for the look-back time
   #'
   #'@param scale
   #'A boolean value, which determines if the frames shown in the movie
@@ -315,12 +323,33 @@ modified.surfsmovie.enst = function(track, mesh.width = GLobal.L,
     if(t.plot[frame] == t.plot[length(t.plot)]){f.255 = T}else{f.255 = F}
     if(scale){s = sf[frame]}else{s = NULL}
 
-
     #plot_enst(max.layer=7,smoothing=1/3,gamma=0.01, scale = s, final=f.255,  col.palette = col) # create raster image of the layered enstrophy
     plot_enst(max.layer=l,smoothing=1/3, scale = s, final=f.255,  col.palette = col, alpha =  bright.scale[1], beta = bright.scale[2], gamma=bright.scale[3]) # create raster image of the layered enstrophy
 
-
     grDevices::dev.off() # Close the pdf file
+
+
+    if (show.time) {
+
+      diagonal = sqrt(prod(png.size[1:2]))
+      s = 0.03*diagonal*text.size
+      img = magick::image_read(place.png)
+      img = magick::image_annotate(img, sprintf('Lookback time = %.2f Gyr',t.plot[frame]),
+                                   size = s, location = sprintf('%+d%+d',round(1.8*s),round(png.size[2] - 2*s)), color = 'white', font='sans', degrees=0)
+      par(mar=c(0,0,0,0))
+      magplot(NA, xlim=c(0,300), ylim = c(0,300))
+      rasterImage(img, 0,0,300,300)
+      img.color <<- img
+      img= as.numeric(img[[1]])[,,1:3]
+      img.numeric <<- img
+      png::writePNG(img, place.png)
+
+    }
+
+
+
+
+    stop("done done done")
 
     if(show.R200){
 
@@ -380,7 +409,6 @@ modified.surfsmovie.enst = function(track, mesh.width = GLobal.L,
     call = sprintf('rm -rf %s',dir)
     system(call)
   }
-
 
 
 

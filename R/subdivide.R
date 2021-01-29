@@ -46,11 +46,10 @@ subdivide = function(n=1, center=c(0,0,0), id=seq_along(ID.table$RX), ntot = 0, 
   #'@export
   #'
 
-  ds = Grid.L/3^n #cell box side length
+  ds = as.numeric(Grid.L/3^n) #cell box side length
 
   # sort each particle from the IDs given into a cell box within the 3x3x3 grid based on the particles x, y and z coordinates
   #stored in data.table for convienence, data.table is very easy to manipulate
-
   index2.0 = data.table::data.table(
     x.i=ceiling((ID.table$RX[id]-(center[1] - 1.5*ds ) ) / ds),
     y.i=ceiling((ID.table$RY[id]-(center[2] - 1.5*ds ) ) / ds),

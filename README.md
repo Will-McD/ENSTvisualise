@@ -35,7 +35,7 @@ The other parameters can be adjusted as desired to alter the movie length, fps, 
   
   
 The functions within this repository used to create the mp4 files rely on defining two global variables and the updating of two-three global lists. Therefore if not using the do_it_all function define the global integers Global.L and Global.nmax prior to using other functions. 
-Usually defined as:  Global.L = 3*R_200 & Global.nmax = 6 or 7
+Usually defined as:  Global.L = 3*R_200 & Global.nmax = 6
 
 
 Global.L is the total side length of the adaptive mesh used, it is defined as three times the virial radius of the halo at redshift zero. This allows for the irregular shape or lack of ellipticity within some halos by capturing just outside of the virial radius. The virial radius is calculated in Mpc/h, which is the simulation unit used in SURFS. 
@@ -46,8 +46,8 @@ Computational time can be reduced through a reduced Global.nmax, however this wi
 
 (3^(5-1) is used as the Global lists which store each layer of data are indexed from 1, with 1 being the layer which has an empty grid or the layer that is the halo itself with no grid applied i.e) just the box of side length R200 )
 
-(Global.nmax = 6 works for majority of cases, however with some large halos a global.nmax of 7 or greater is needed. 
-!!! There is a relativly large slowdown between 6 and 7 on {my machine atleast} !!! 
+(Global.nmax = 6 works for majority of cases and any layers higher may result in a grid cell length shorter than the softening length of the simulation. In which case that layer cannot be used.  
+!!! ALWAYS CHECK IF THE GLOBAL.NMAX RESULTS IN HAVING A MESH FINER THAN THE SOFTENING LENGTH OF THE SIMULATION!!! 
 )
 
 Changes to the Global.nmax can also alter the brightness of the images produced as it will affect the level to which the patricle density is also calculated and the level of smoothing. Therefore if after adjusting the Global.nmax the brightness seems either too high or low, alter the brightness scale within the plot_enst function.
