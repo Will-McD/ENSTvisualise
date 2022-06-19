@@ -9,17 +9,13 @@ Currently the visualisation and interpolation scripts are not working due to bei
  -->> LARGE UPDATE / OVERHAUL CURRENTLY BEING WORKED ON. 
 
 
-This repository is largley dependant on code from the simstar and Surfsuite repositories and packages found at: 
-https://github.com/obreschkow/simstar & https://github.com/obreschkow/surfsuite.
-
-
+This repository is largley dependant on code from the Surfsuite repository: https://github.com/obreschkow/surfsuite.
 
 
 NON-R REQUIREMENTS:
 
 1. Input simulation data must be in a HDF5 file that is formatted as given by https://github.com/obreschkow/surfsuite
 2. ffmpeg is required for the compiling of the mp4 files to fully visualise the data. 
-
 
 
 Computing Enstrophy:
