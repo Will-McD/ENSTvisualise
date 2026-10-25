@@ -4,12 +4,12 @@ CURRENTLY ONLY EQUIPED TO RUN FOR SURFS L210N1024NR, MORE GENERALISED FORM IS CU
 
 
 
-################## CURRENTLY UNDER MAINTAINCE, OUTDATED PACKAGES NEED TO BE REPLACED ##################
+######## BROKEN PACKAGE AND DEPENDS ON DEPRECATED PACKAGES #######
 Currently the visualisation and interpolation scripts are not working due to being dependant on out dated packages. 
- -->> LARGE UPDATE / OVERHAUL CURRENTLY BEING WORKED ON. 
+DO NOT USE THIS REPOSITORY OR CODE AS IT IS INCOMPLETE
 
 
-This repository is largley dependant on code from the Surfsuite repository: https://github.com/obreschkow/surfsuite.
+This repository is largely dependant on code from the Surfsuite repository: https://github.com/obreschkow/surfsuite.
 
 
 NON-R REQUIREMENTS:
